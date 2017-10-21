@@ -21,6 +21,8 @@ class AgentAdvertisementSource : public Element {
 	
 		IPAddress _srcIP;
 		IPAddress _dstIP;
+		IPAddress RouterAddress;
+
 		uint32_t _sequence;
 };
 

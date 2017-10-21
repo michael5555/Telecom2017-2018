@@ -22,6 +22,8 @@ int AgentAdvertisementSource::configure(Vector<String> &conf, ErrorHandler *errh
     if (Args(conf, this, errh)
             .read_mp("SRC", _srcIP)
             .read_mp("DST", _dstIP)
+            .read_mp("RA", RouterAddress)
+
             .complete() < 0) return -1;
 	
 	Timer *timer = new Timer(this);
@@ -66,7 +68,7 @@ Packet* AgentAdvertisementSource::make_packet(){
 
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
 
-    rapl->router_address = IPAddress(String("192.168.0.2"));
+    rapl->router_address = RouterAddress;
     rapl->preference_level = 1;
 
     agent_advertisement_extension *aa_ext = (agent_advertisement_extension*)(rapl + 1);
@@ -91,6 +93,7 @@ Packet* AgentAdvertisementSource::make_packet(){
     aa_ext->reserved = 0;
 
     IPAddress *coa = (IPAddress*)(aa_ext + 1);
+     *coa = RouterAddress;
 
 	_sequence++;
 	
