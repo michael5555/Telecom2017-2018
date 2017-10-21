@@ -1,8 +1,37 @@
 #ifndef CLICK_MOBILEIPPACKETS_H
 #define CLICK_MOBILEIPPACKETS_H
 
-// mobility agent advertisement extension
+//ICMP Router Advertisement
 
+struct icmp_router_advertisement {
+
+    uint8_t type; // 9
+    uint8_t code; // 2
+    uint16_t checksum;
+
+    uint8_t num_addrs;
+    uint8_t addr_entry_size; // 2
+    uint16_t lifetime;
+
+}
+
+struct router_address_preference_level {
+
+    IPAddress router_address;
+    int32_t preference_level;
+}
+
+// ICMP Router solicitation
+
+struct icmp_router_sollicitation {
+    uint8_t type;
+    uint8_t code;
+    uint16_t checksum;
+
+    uint32_t reserved;
+
+}
+// Mobility Agent Advertisement extension
 struct agent_advertisement_extension {
 
     uint8_t type;
