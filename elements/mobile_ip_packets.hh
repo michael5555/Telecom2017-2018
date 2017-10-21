@@ -25,5 +25,4 @@ struct agent_advertisement_extension {
     uint8_t reserved : 5;
 }
 
-
 #endif
