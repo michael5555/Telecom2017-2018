@@ -13,13 +13,13 @@ struct icmp_router_advertisement {
     uint8_t addr_entry_size; // 2
     uint16_t lifetime;
 
-}
+};
 
 struct router_address_preference_level {
 
     IPAddress router_address;
     int32_t preference_level;
-}
+};
 
 // ICMP Router solicitation
 
@@ -30,7 +30,8 @@ struct icmp_router_sollicitation {
 
     uint32_t reserved;
 
-}
+};
+
 // Mobility Agent Advertisement extension
 struct agent_advertisement_extension {
 
@@ -52,6 +53,6 @@ struct agent_advertisement_extension {
     uint8_t I : 1;
 
     uint8_t reserved : 5;
-}
+};
 
 #endif

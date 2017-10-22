@@ -1,18 +1,18 @@
 #include <click/config.h>
-#include <click/confparse.hh>
+#include <click/args.hh>
 #include <click/error.hh>
 #include <clicknet/ip.h>
 #include <clicknet/ether.h>
 #include <clicknet/icmp.h>
 #include <click/timer.hh>
 
-#include "../elements/mobile_ip_packets.hh"
+#include "mobile_ip_packets.h"
 
 #include "agent_advertisement_source.hh"
 
 
 CLICK_DECLS
-AgentAdvertisementSource::AgentAdvertisementSource(): _sequence(0), 
+AgentAdvertisementSource::AgentAdvertisementSource(): _sequence(0)
 {}
 
 AgentAdvertisementSource::~AgentAdvertisementSource()
@@ -37,7 +37,7 @@ Packet* AgentAdvertisementSource::make_packet(){
 
     WritablePacket *q = Packet::make(headroom, 0, sizeof(click_ip) 
     + sizeof(icmp_router_advertisement) + sizeof(agent_advertisement_extension)
-    +  sizeof(router_address_preference_level) + sizeof(IPAddress) , 0);
+    + sizeof(router_address_preference_level) + sizeof(IPAddress) , 0);
 
     if (!q)
 		return 0;
@@ -65,6 +65,7 @@ Packet* AgentAdvertisementSource::make_packet(){
 	icmph->num_addrs = 1;
 	icmph->addr_entry_size = 2;
 	icmph->lifetime = 45;
+
 
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
 
@@ -95,9 +96,11 @@ Packet* AgentAdvertisementSource::make_packet(){
     IPAddress *coa = (IPAddress*)(aa_ext + 1);
      *coa = RouterAddress;
 
-	_sequence++;
+	icmph->checksum = click_in_cksum((const unsigned char *)icmph, sizeof(icmp_router_advertisement));
+
+
+	_sequence++; 
 	
-	icmph->icmp_cksum = click_in_cksum((const unsigned char *)icmph, sizeof(icmp_router_advertisement));
 	
 	q->set_dst_ip_anno(_dstIP);
 	
@@ -109,6 +112,7 @@ AgentAdvertisementSource::run_timer(Timer *timer)
 {
     if (Packet *q = make_packet()) {
  	   output(0).push(q);
+        click_chatter("send agent advertisment\n");
  	   timer->reschedule_after_msec(1000);
     }
 }
