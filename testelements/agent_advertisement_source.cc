@@ -7,7 +7,6 @@
 #include <click/timer.hh>
 
 #include "mobile_ip_packets.h"
-
 #include "agent_advertisement_source.hh"
 
 
@@ -49,7 +48,7 @@ Packet* AgentAdvertisementSource::make_packet(){
     iph->ip_v = 4;
     iph->ip_hl = sizeof(click_ip) >> 2;
     iph->ip_len = htons(q->length());
-    uint16_t ip_id = ((_sequence) % 0xFFFF) + 1; // ensure ip_id != 0
+    uint16_t ip_id = ((_sequence) % 0xFFFF) /*+ 1*/; // ensure ip_id != 0
     iph->ip_id = htons(ip_id);
     iph->ip_p = IP_PROTO_ICMP; /* icmp */
     iph->ip_ttl = 1;
@@ -64,39 +63,27 @@ Packet* AgentAdvertisementSource::make_packet(){
 	icmph->checksum = 0;
 	icmph->num_addrs = 1;
 	icmph->addr_entry_size = 2;
-	icmph->lifetime = 45;
+	icmph->lifetime = htons(45);
 
 
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
 
     rapl->router_address = RouterAddress;
-    rapl->preference_level = 1;
+    rapl->preference_level = htonl(1);
 
     agent_advertisement_extension *aa_ext = (agent_advertisement_extension*)(rapl + 1);
 
     aa_ext->type = 16;
     aa_ext->length = 6 + 4 * 1;
     aa_ext->sequence_number = htons(_sequence);
-    aa_ext->registration_lifetime = 30;
-
-    aa_ext->R = 1;
-    aa_ext->B = 0;
-    aa_ext->H = 1;
-    aa_ext->F = 1;
-    aa_ext->M = 0;
-    aa_ext->G = 0;
-    aa_ext->r = 0;
-    aa_ext->T = 0;
-    aa_ext->U = 0;
-    aa_ext->X = 0;
-    aa_ext->I = 0;
-
-    aa_ext->reserved = 0;
+    aa_ext->registration_lifetime = htons(30);
+    aa_ext->flags_and_reserved = htons(0b1011000000000000);
 
     IPAddress *coa = (IPAddress*)(aa_ext + 1);
      *coa = RouterAddress;
 
-	icmph->checksum = click_in_cksum((const unsigned char *)icmph, sizeof(icmp_router_advertisement));
+	icmph->checksum = click_in_cksum((const unsigned char *)icmph, sizeof(icmp_router_advertisement)
+    + sizeof(router_address_preference_level) + sizeof(agent_advertisement_extension) + sizeof(IPAddress));
 
 
 	_sequence++; 
@@ -112,7 +99,7 @@ AgentAdvertisementSource::run_timer(Timer *timer)
 {
     if (Packet *q = make_packet()) {
  	   output(0).push(q);
-        click_chatter("send agent advertisment\n");
+        click_chatter("send agent advertisement\n");
  	   timer->reschedule_after_msec(1000);
     }
 }
