@@ -77,4 +77,4 @@ RouterSollicitationSource::run_timer(Timer *timer)
 }
 
 CLICK_ENDDECLS
-EXPORT_ELEMENT(AgentAdvertisementSource)
+EXPORT_ELEMENT(RouterSollicitationSource)
