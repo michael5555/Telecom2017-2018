@@ -119,4 +119,9 @@ elementclass Agent {
 	public_frag[1]
 		-> ICMPError($public_address, unreachable, needfrag)
 		-> rt;
+
+// MY ADDITIONS
+	advertisementsource::AgentAdvertisementGenerator(MABASE MAState)
+	-> CheckIPHeader()
+	-> private_arpq
 }
