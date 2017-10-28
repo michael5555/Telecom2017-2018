@@ -15,6 +15,8 @@
 elementclass MobileNode {
 	$address, $gateway, $home_agent |
 
+	MNInfoBase :: MNInfoBase(MYADDRESS $address)
+
 	// Shared IP input path
 	ip :: Strip(14)
 		-> CheckIPHeader

@@ -5,23 +5,23 @@
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include <click/vector.hh>
-#include "hainfobase.hh"
+#include "Mainfobase.hh"
 #include <iostream>
 
 CLICK_DECLS
 
-HAInfoBase::HAInfoBase() {}
+MAInfoBase::MAInfoBase() {}
 
-HAInfoBase::~HAInfoBase() {}
+MAInfoBase::~MAInfoBase() {}
 
-void* HAInfoBase::cast(const char* n) {
-    if (strcmp(n, "HAInfoBase") == 0)
-        return (HAInfoBase*)this;
+void* MAInfoBase::cast(const char* n) {
+    if (strcmp(n, "MAInfoBase") == 0)
+        return (MAInfoBase*)this;
     return 0;
 }
 
 
-int HAInfoBase::configure(Vector<String>& conf, ErrorHandler* errh) {
+int MAInfoBase::configure(Vector<String>& conf, ErrorHandler* errh) {
     if (Args(conf, this, errh)
             .read("PUBLIC", MyPublicAddress)
             .read("PRIVATE", MyPrivateAddress)
@@ -30,9 +30,9 @@ int HAInfoBase::configure(Vector<String>& conf, ErrorHandler* errh) {
     return 0;
 }
 
-void HAInfoBase::add_handlers() {}
+void MAInfoBase::add_handlers() {}
 
 
 
 CLICK_ENDDECLS
-EXPORT_ELEMENT(FAInfoBase)
+EXPORT_ELEMENT(MAInfoBase)

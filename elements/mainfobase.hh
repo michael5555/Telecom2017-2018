@@ -1,5 +1,6 @@
 #ifndef CLICK_HAINFOBASE_HH
 #define CLICK_HAINFOBASE_HH
+
 #include <click/config.h>
 #include <click/args.hh>
 #include <click/error.hh>
@@ -10,21 +11,19 @@
 
 CLICK_DECLS
 
-class HAInfoBase : public Element { 
+class MAInfoBase : public Element { 
 	public:
-		HAInfoBase();
-		~HAInfoBase();
+		MAInfoBase();
+		~MAInfoBase();
 
-		const char *class_name() const	{ return "HAInfoBase"; }
+		const char *class_name() const	{ return "MAInfoBase"; }
 		int configure(Vector<String>&, ErrorHandler*);
 		void* cast(const char* n);
 
 		IPAddress getMyPublicAddress() {return MyPublicAddress;}
 		IPAddress getMyPrivateAddress() {return MyPrivateAddress;}
 
-
 		void add_handlers();
-
 
 	private:
 		IPAddress MyPublicAddress;
