@@ -23,20 +23,22 @@ void* MNInfoBase::cast(const char* n) {
 int MNInfoBase::configure(Vector<String>& conf, ErrorHandler* errh) {
     if (Args(conf, this, errh)
             .read("MYADDRESS", MyAddress)
+            .read("HAPUBLIC", HomeAgentPublic)
+            .read("HAPRIVATE", HomeAgentPrivate)
             .complete() < 0) return -1;
 
     return 0;
-}
-
-void MNInfoBase::setHomeRouter(IPAddress addr) {
-
-    HomeRouter = addr;
 }
 
 void MNInfoBase::setCurrentRouter(IPAddress addr) {
 
     CurrentRouter = addr;
 }
+
+void MNInfoBase::setCareOfAddress(IPAddress addr) {
+    
+        CareOfAddress = addr;
+    }
 
 void MNInfoBase::setHomeStatus(bool hs) {
 

@@ -20,15 +20,17 @@ class MNInfoBase : public Element {
 		void* cast(const char* n);
 
 		IPAddress getMyAddress() {return MyAddress;}
-
+		IPAddress getHomeAgentPublic() {return HomeAgentPublic;}
+		IPAddress getHomeAgentPrivate() {return HomeAgentPrivate;}
+		
 		bool getHomeStatus() {return homestatus;}
 		void setHomeStatus(bool);
 
-		IPAddress getHomeRouter() {return HomeRouter;}
-		void setHomeRouter(IPAddress);
-
 		IPAddress getCurrentRouter() {return CurrentRouter;}
 		void setCurrentRouter(IPAddress);
+
+		IPAddress getCareOfAddress() {return CareOfAddress;}
+		void setCareOfAddress(IPAddress);
 
 		int getCurrentLifeTime() {return CurrentLifeTime;}
 		int setCurrentLifeTime(int); 
@@ -39,9 +41,12 @@ class MNInfoBase : public Element {
 		IPAddress MyAddress;
 		bool homestatus;
 
-		IPAddress HomeRouter;
+		IPAddress HomeAgentPublic;
+		IPAddress HomeAgentPrivate;
+		
 		IPAddress CurrentRouter;
-
+		IPAddress CareOfAddress;
+		
 		int CurrentLifeTime;		
 };
 
