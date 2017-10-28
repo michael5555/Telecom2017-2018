@@ -25,7 +25,7 @@ elementclass MobileNode {
 			$address:ipnet 1,
 			0.0.0.0/0 $gateway 1
 			224.0.0.0/4 2)
-)
+
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)
