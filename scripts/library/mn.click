@@ -57,5 +57,5 @@ elementclass MobileNode {
 		-> ip;
 
 	rt[2]
-	-> adverthandler :: MNAdvertisementHandler(MNBase MNState)
+	-> adverthandler :: MNAdvertisementHandler(MNBASE MNState)
 }
