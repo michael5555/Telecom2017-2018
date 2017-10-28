@@ -1,5 +1,6 @@
 #include <click/config.h>
 #include <click/args.hh>
+#include <click/confparse.hh>
 #include <click/error.hh>
 #include "agentadvertisementgenerator.hh"
 #include "mobile_ip_packets.h"
@@ -17,10 +18,8 @@ AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequenc
 AgentAdvertisementGenerator::~AgentAdvertisementGenerator() {}
 
 int AgentAdvertisementGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
-    if (Args(conf, this, errh)
-    .read("MABASE", MABase)
-    .complete() < 0) return -1;
-
+    if (cp_va_kparse(conf, this, errh, "MABASE", cpkM+cpkP, cpElementCast,"MAInfoBase", &MABase, cpEnd) < 0) return -1;
+    
     if (MABase == 0) return errh->error("Wrong  argument, should be a MAInfoBase element.");
     return 0;
 }
