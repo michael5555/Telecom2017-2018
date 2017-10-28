@@ -13,7 +13,7 @@
 elementclass Agent {
 	$private_address, $public_address, $gateway |
 
-	MAInfoBase :: MAInfoBase(PUBLIC $public_address, PRIVATE private_address)
+	MAState :: MAInfoBase(PUBLIC $public_address, PRIVATE $private_address)
 
 	// Shared IP input path and routing table
 	ip :: Strip(14)
