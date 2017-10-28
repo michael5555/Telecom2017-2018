@@ -5,7 +5,7 @@
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include <click/vector.hh>
-#include "Mainfobase.hh"
+#include "mainfobase.hh"
 #include <iostream>
 
 CLICK_DECLS
