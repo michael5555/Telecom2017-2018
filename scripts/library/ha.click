@@ -13,6 +13,8 @@
 elementclass Agent {
 	$private_address, $public_address, $gateway |
 
+	MAState :: MAInfoBase(PUBLIC $public_address, PRIVATE $private_address);
+
 	// Shared IP input path and routing table
 	ip :: Strip(14)
 		-> CheckIPHeader
@@ -117,4 +119,8 @@ elementclass Agent {
 	public_frag[1]
 		-> ICMPError($public_address, unreachable, needfrag)
 		-> rt;
+
+	advertisementsource :: AgentAdvertisementGenerator(MABASE MAState)
+	-> CheckIPHeader
+	-> private_arpq
 }

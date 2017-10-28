@@ -15,13 +15,16 @@
 elementclass MobileNode {
 	$address, $gateway, $home_agent |
 
+	MNState :: MNInfoBase(MYADDRESS $address, HAPUBLIC $home_agent, HAPRIVATE $gateway);
+
 	// Shared IP input path
 	ip :: Strip(14)
 		-> CheckIPHeader
 		-> rt :: LinearIPLookup(
 			$address:ip/32 0,
 			$address:ipnet 1,
-			0.0.0.0/0 $gateway 1)
+			0.0.0.0/0 $gateway 1,
+			224.0.0.0/4 2)
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)
@@ -51,4 +54,7 @@ elementclass MobileNode {
 
 	in_cl[2]
 		-> ip;
+
+	rt[2]
+	-> adverthandler :: MNAdvertisementHandler(MNBASE MNState)
 }
