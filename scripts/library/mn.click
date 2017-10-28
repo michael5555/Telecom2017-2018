@@ -15,7 +15,7 @@
 elementclass MobileNode {
 	$address, $gateway, $home_agent |
 
-	MNState :: MNInfoBase(MYADDRESS $address, HAPRIVATE $gateway, HAPUBLIC $home_agent)
+	MNState::MNInfoBase(MYADDRESS $address, HAPRIVATE $gateway, HAPUBLIC $home_agent)
 
 	// Shared IP input path
 	ip :: Strip(14)
@@ -57,5 +57,5 @@ elementclass MobileNode {
 		-> ip;
 
 	rt[2]
-	-> MNAdvertisementHandler(MNBase MNState)
+	-> adverthandler :: MNAdvertisementHandler(MNBase MNState)
 }
