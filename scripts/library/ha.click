@@ -121,9 +121,7 @@ elementclass Agent {
 		-> rt;
 
 	advertisementsource :: AgentAdvertisementGenerator(MABASE MAState)
-	-> Print(LABEL "111111111111111", CONTENTS NONE)
-	-> CheckIPHeader
-	-> Print(LABEL "222222222222222", CONTENTS NONE)
+	-> CheckIPHeader()
 	-> private_arpq
-	-> Print(LABEL "333333333333333", CONTENTS NONE)
+
 }

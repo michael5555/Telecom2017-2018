@@ -33,7 +33,6 @@ void MNAdvertisementHandler::push(int, Packet* p) {
 }
 
 void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
-    click_chatter("packet arrived\n");
     icmp_router_advertisement* icmph = (icmp_router_advertisement*)(p->data() + p->ip_header_length());
 
     const int type = icmph->type;

@@ -24,7 +24,7 @@ elementclass MobileNode {
 			$address:ip/32 0,
 			$address:ipnet 1,
 			0.0.0.0/0 $gateway 1,
-			224.0.0.0/4 2)
+			255.0.0.0/4 2)
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)
@@ -45,7 +45,6 @@ elementclass MobileNode {
 
 	// incoming packets
 	input
-		-> Print(LABEL "4444444444444", CONTENTS NONE)
 		-> HostEtherFilter($address)
 		-> in_cl :: Classifier(12/0806 20/0001, 12/0806 20/0002, 12/0800)
 		-> arp_res :: ARPResponder($address)
@@ -58,5 +57,5 @@ elementclass MobileNode {
 		-> ip;
 
 	rt[2]
-	-> adverthandler :: MNAdvertisementHandler(MNBASE MNState)
+	    -> adverthandler :: MNAdvertisementHandler(MNBASE MNState)
 }
