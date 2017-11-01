@@ -58,4 +58,8 @@ elementclass MobileNode {
 
 	rt[2]
 	    -> adverthandler :: MNAdvertisementHandler(MNBASE MNState)
+
+	sollicitationsource :: NodeSollicitationGenerator(MNBASE MNState)
+	-> CheckIPHeader()
+	-> arpq
 }

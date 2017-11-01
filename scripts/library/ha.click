@@ -23,7 +23,8 @@ elementclass Agent {
 					$public_address:ip/32 0,
 					$private_address:ipnet 1,
 					$public_address:ipnet 2,
-					0.0.0.0/0 $gateway 2);
+					0.0.0.0/0 $gateway 2
+					255.0.0.0/4 3);
 	
 	// ARP responses are copied to each ARPQuerier and the host.
 	arpt :: Tee (2);
@@ -119,6 +120,9 @@ elementclass Agent {
 	public_frag[1]
 		-> ICMPError($public_address, unreachable, needfrag)
 		-> rt;
+
+	rt[3]
+		-> sollicitationhandler :: NodeSollicitationGenerator(MABASE MAState, AAGEN advertisementsource)
 
 	advertisementsource :: AgentAdvertisementGenerator(MABASE MAState)
 	-> CheckIPHeader()

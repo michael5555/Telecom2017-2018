@@ -26,18 +26,25 @@ int AgentAdvertisementGenerator::configure(Vector<String>& conf, ErrorHandler* e
 
 int AgentAdvertisementGenerator::sendAgentAdvertisement(const String& conf, Element* e, void* thunk, ErrorHandler* errh){
     AgentAdvertisementGenerator* aag =  (AgentAdvertisementGenerator*) e;
-    if (Packet *q = aag->make_packet()) {
+    if (Packet *q = aag->make_packet(IPAddress("255.255.255.255"))) {
  	    aag->output(0).push(q);
         click_chatter("send agent advertisement with broadcast destination\n");
     }
     return 0;
+}
+
+void AgentAdvertisementGenerator::sendUnicastAdvertisement(IPAddress _dst){
+    if (Packet *q = make_packet(_dst)) {
+ 	    output(0).push(q);
+        click_chatter("send agent advertisement with unicast destination\n");
+    }
 }
   
 void AgentAdvertisementGenerator::add_handlers() {
     add_write_handler("sendAdvertisement", &sendAgentAdvertisement, (void*)0);
 }
 
-Packet* AgentAdvertisementGenerator::make_packet() {
+Packet* AgentAdvertisementGenerator::make_packet(IPAddress _dst) {
     int headroom = sizeof(click_ether);
     
     int advertisementsize = sizeof(click_ip) 
@@ -61,7 +68,7 @@ Packet* AgentAdvertisementGenerator::make_packet() {
     iph->ip_p = IP_PROTO_ICMP; /* icmp */
     iph->ip_ttl = 1;
     iph->ip_src = MABase->getMyPrivateAddress();
-    iph->ip_dst = IPAddress("255.255.255.255");
+    iph->ip_dst = _dst;
     iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
     
     icmp_router_advertisement *icmph = (icmp_router_advertisement *)(iph + 1);
@@ -94,11 +101,13 @@ Packet* AgentAdvertisementGenerator::make_packet() {
 
     _sequence++; 
     
-    q->set_dst_ip_anno(IPAddress("255.255.255.255"));
+    q->set_dst_ip_anno(_dst);
     
     return q;
    
 }
+
+
 
 CLICK_ENDDECLS
 EXPORT_ELEMENT(AgentAdvertisementGenerator)

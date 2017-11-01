@@ -25,15 +25,14 @@ public:
     const char* processing() const { return PUSH; }
     int configure(Vector<String>&, ErrorHandler*);
 
-    void sendGeneralReport(int maxRespTime);
-
     static int sendAgentAdvertisement(const String& conf, Element* e, void* thunk, ErrorHandler* errh);
+    void sendUnicastAdvertisement(IPAddress);
     void add_handlers();
 
 
 private:
 
-    Packet* make_packet();
+    Packet* make_packet(IPAddress);
     MAInfoBase* MABase;
 
     uint32_t _sequence;
