@@ -28,7 +28,7 @@ int NodeSollicitationGenerator::sendSollicitation(const String& conf, Element* e
     NodeSollicitationGenerator* nsg =  (NodeSollicitationGenerator*) e;
     if (Packet *q = nsg->make_packet()) {
  	    nsg->output(0).push(q);
-        click_chatter("sent router sollicitation with broadcast destination\n");
+        click_chatter("Mobile Node -- sent router sollicitation with broadcast destination.\n");
     }
     return 0;
 }

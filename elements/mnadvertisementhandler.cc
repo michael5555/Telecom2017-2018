@@ -52,13 +52,13 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
     if(MNBase->getCurrentRouter() == MNBase->getHomeAgentPublic() || MNBase->getCurrentRouter() == MNBase->getHomeAgentPrivate())
     {
         MNBase->setHomeStatus(true);
-        click_chatter("Mobile Node is home.\n");
+        click_chatter("Mobile Node -- I am home.\n");
         
     }
     else {
 
         MNBase->setHomeStatus(false);
-        click_chatter("Mobile Node is away.\n");
+        click_chatter("Mobile Node --  I am away.\n");
     }
     
 }

@@ -28,7 +28,7 @@ int AgentAdvertisementGenerator::sendAgentAdvertisement(const String& conf, Elem
     AgentAdvertisementGenerator* aag =  (AgentAdvertisementGenerator*) e;
     if (Packet *q = aag->make_packet(IPAddress("255.255.255.255"))) {
  	    aag->output(0).push(q);
-        click_chatter("send agent advertisement with broadcast destination\n");
+        click_chatter("Mobility Agent -- sent agent advertisement with broadcast destination\n");
     }
     return 0;
 }
@@ -36,7 +36,7 @@ int AgentAdvertisementGenerator::sendAgentAdvertisement(const String& conf, Elem
 void AgentAdvertisementGenerator::sendUnicastAdvertisement(IPAddress _dst){
     if (Packet *q = make_packet(_dst)) {
  	    output(0).push(q);
-        click_chatter("send agent advertisement with unicast destination\n");
+        click_chatter("Mobility Agent -- sent agent advertisement with unicast destination\n");
     }
 }
   

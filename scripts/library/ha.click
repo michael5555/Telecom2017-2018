@@ -23,7 +23,7 @@ elementclass Agent {
 					$public_address:ip/32 0,
 					$private_address:ipnet 1,
 					$public_address:ipnet 2,
-					0.0.0.0/0 $gateway 2
+					0.0.0.0/0 $gateway 2,
 					255.0.0.0/4 3);
 	
 	// ARP responses are copied to each ARPQuerier and the host.
@@ -122,7 +122,7 @@ elementclass Agent {
 		-> rt;
 
 	rt[3]
-		-> sollicitationhandler :: NodeSollicitationGenerator(MABASE MAState, AAGEN advertisementsource)
+		-> sollicitationhandler :: MASollicitationHandler(MABASE MAState, AAGEN advertisementsource)
 
 	advertisementsource :: AgentAdvertisementGenerator(MABASE MAState)
 	-> CheckIPHeader()
