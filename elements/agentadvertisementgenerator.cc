@@ -38,16 +38,18 @@ void AgentAdvertisementGenerator::add_handlers() {
 }
 
 Packet* AgentAdvertisementGenerator::make_packet() {
-	int headroom = sizeof(click_ether);
+    int headroom = sizeof(click_ether);
     
-    WritablePacket *q = Packet::make(headroom, 0, sizeof(click_ip) 
-    + sizeof(icmp_router_advertisement) + sizeof(agent_advertisement_extension)
-    + sizeof(router_address_preference_level) + sizeof(IPAddress) , 0);
+    int advertisementsize = sizeof(click_ip) 
+    + sizeof(icmp_router_advertisement) + sizeof(router_address_preference_level) 
+    + sizeof(agent_advertisement_extension)
+    + sizeof(IPAddress);
+    
+    WritablePacket *q = Packet::make(headroom, 0,advertisementsize , 0);
 
     if (!q)
         return 0;
-    memset(q->data(), '\0', sizeof(click_ip) + sizeof(icmp_router_advertisement)
-    + sizeof(agent_advertisement_extension));
+    memset(q->data(), '\0', advertisementsize);
 
     click_ip *iph = (click_ip *)q->data();
     

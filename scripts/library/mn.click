@@ -44,7 +44,9 @@ elementclass MobileNode {
 		-> output;
 
 	// incoming packets
-	input	-> HostEtherFilter($address)
+	input
+		-> Print(LABEL "4444444444444", CONTENTS NONE)
+		-> HostEtherFilter($address)
 		-> in_cl :: Classifier(12/0806 20/0001, 12/0806 20/0002, 12/0800)
 		-> arp_res :: ARPResponder($address)
 		-> output;
