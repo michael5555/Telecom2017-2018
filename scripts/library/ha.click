@@ -122,7 +122,7 @@ elementclass Agent {
 		-> rt;
 
 	rt[3]
-		-> sollicitationhandler :: MASollicitationHandler(MABASE MAState, AAGEN advertisementsource)
+	-> sollicitationhandler :: MASollicitationHandler(MABASE MAState, AAGEN advertisementsource)
 
 	advertisementsource :: AgentAdvertisementGenerator(MABASE MAState)
 	-> CheckIPHeader()

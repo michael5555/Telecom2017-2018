@@ -18,7 +18,7 @@ class MNAdvertisementHandler : public Element {
 		~MNAdvertisementHandler();
 		
 		const char *class_name() const	{ return "MNAdvertisementHandler"; }
-		const char *port_count() const	{ return "1/0"; }
+		const char *port_count() const	{ return "1/1"; }
 		const char *processing() const	{ return PUSH; }
 		int configure(Vector<String>&, ErrorHandler*);
 

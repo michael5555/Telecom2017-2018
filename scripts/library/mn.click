@@ -25,6 +25,7 @@ elementclass MobileNode {
 			$address:ipnet 1,
 			0.0.0.0/0 $gateway 1,
 			255.0.0.0/4 2)
+		-> adverthandler
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)
@@ -58,6 +59,7 @@ elementclass MobileNode {
 
 	rt[2]
 	    -> adverthandler :: MNAdvertisementHandler(MNBASE MNState)
+		-> Discard
 
 	sollicitationsource :: NodeSollicitationGenerator(MNBASE MNState)
 	-> CheckIPHeader()

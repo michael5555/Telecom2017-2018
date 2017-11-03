@@ -33,13 +33,20 @@ void MNAdvertisementHandler::push(int, Packet* p) {
 }
 
 void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
+
+    click_ip *iph = (click_ip *)p->data();
     icmp_router_advertisement* icmph = (icmp_router_advertisement*)(p->data() + p->ip_header_length());
+    
 
-    const int type = icmph->type;
-    if (type != ICMP_ROUTERADVERT) {
-        return;
+    if(iph->ip_p != IP_PROTO_ICMP) {
+        output(0).push(p);
+    } 
+    else {
+        const int type = icmph->type;
+        if (type != ICMP_ROUTERADVERT) {
+            output(0).push(p);
+        }
     }
-
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
     MNBase->setCurrentRouter(rapl->router_address);
 
