@@ -40,11 +40,13 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
 
     if(iph->ip_p != IP_PROTO_ICMP) {
         output(0).push(p);
+        return;
     } 
     else {
         const int type = icmph->type;
         if (type != ICMP_ROUTERADVERT) {
             output(0).push(p);
+            return;
         }
     }
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
