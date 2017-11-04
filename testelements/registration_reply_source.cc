@@ -9,22 +9,21 @@
 #include <click/timer.hh>
 
 #include "mobile_ip_packets.h"
-#include "registration_request_source.hh"
+#include "registration_reply_source.hh"
 
 
 CLICK_DECLS
-RegistrationRequestSource::RegistrationRequestSource(): _sequence(0)
+RegistrationReplySource::RegistrationReplySource(): _sequence(0)
 {}
 
-RegistrationRequestSource::~RegistrationRequestSource()
+RegistrationReplySource::~RegistrationReplySource()
 {}
 
-int RegistrationRequestSource::configure(Vector<String> &conf, ErrorHandler *errh) {
+int RegistrationReplySource::configure(Vector<String> &conf, ErrorHandler *errh) {
     if (Args(conf, this, errh)
             .read_mp("SRC", _srcIP)
             .read_mp("DST", _dstIP)
             .read_mp("HA", HomeAgent)
-            .read_mp("COA", CareOfAddress)
             .complete() < 0) return -1;
 	
 	Timer *timer = new Timer(this);
@@ -33,16 +32,16 @@ int RegistrationRequestSource::configure(Vector<String> &conf, ErrorHandler *err
 	return 0;
 }
 
-Packet* RegistrationRequestSource::make_packet(){
+Packet* RegistrationReplySource::make_packet(){
 	int headroom = sizeof(click_ether);
 
     WritablePacket *q = Packet::make(headroom, 0, sizeof(click_ip) 
-    + sizeof(click_udp) + sizeof(mobile_ip_registration_request), 0);
+    + sizeof(click_udp) + sizeof(mobile_ip_registration_reply), 0);
 
     if (!q)
 		return 0;
     memset(q->data(), '\0', sizeof(click_ip) + sizeof(click_udp)
-    + sizeof(mobile_ip_registration_request));
+    + sizeof(mobile_ip_registration_reply));
 
 	click_ip *iph = (click_ip *)q->data();
 	
@@ -61,18 +60,17 @@ Packet* RegistrationRequestSource::make_packet(){
 	
     udph->uh_sport = htons(56026);
     udph->uh_dport = htons(434);
-    udph->uh_ulen = htons(32);
+    udph->uh_ulen = htons(28);
     udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));
     
 
-    mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(udph + 1);
+    mobile_ip_registration_reply *mipr = (mobile_ip_registration_reply*)(udph + 1);
 
-    mipr->type = 1;
-    mipr->flags = 0x00;
-    mipr->lifetime = htons(60);
-    mipr->home_address = _srcIP;
+    mipr->type = 3;
+    mipr->code = 0;
+    mipr->lifetime = htons(30);
+    mipr->home_address = _dstIP;
     mipr->home_agent = HomeAgent;
-    mipr->care_of_address = CareOfAddress;
     mipr->id = htonq(0);
 
 	_sequence++; 
@@ -83,14 +81,14 @@ Packet* RegistrationRequestSource::make_packet(){
 }
 
 void
-RegistrationRequestSource::run_timer(Timer *timer)
+RegistrationReplySource::run_timer(Timer *timer)
 {
     if (Packet *q = make_packet()) {
  	   output(0).push(q);
-        click_chatter("send Mobile IP Registration Request\n");
+        click_chatter("sent Mobile IP Registration Reply\n");
  	   timer->reschedule_after_msec(1000);
     }
 }
 
 CLICK_ENDDECLS
-EXPORT_ELEMENT(RegistrationRequestSource)
+EXPORT_ELEMENT(RegistrationReplySource)
