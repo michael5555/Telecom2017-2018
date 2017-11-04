@@ -1,16 +1,17 @@
-#ifndef CLICK_AGENTADVERTISEMENTSOURCE_HH
-#define CLICK_AGENTADVERTISEMENTSOURCE_HH
+#ifndef CLICK_REGISTRATIONREQUESTSOURCE_HH
+#define CLICK_REGISTRATIONREQUESTSOURCE_HH
 
 #include <click/element.hh>
 #include <click/ipaddress.hh>
+
 CLICK_DECLS
 
-class AgentAdvertisementSource : public Element { 
+class RegistrationRequestSource : public Element { 
 	public:
-		AgentAdvertisementSource();
-		~AgentAdvertisementSource();
+		RegistrationRequestSource();
+		~RegistrationRequestSource();
 		
-		const char *class_name() const	{ return "AgentAdvertisementSource"; }
+		const char *class_name() const	{ return "RegistrationRequestSource"; }
 		const char *port_count() const	{ return "0/1"; }
 		const char *processing() const	{ return PUSH; }
 		int configure(Vector<String>&, ErrorHandler*);
@@ -21,9 +22,10 @@ class AgentAdvertisementSource : public Element {
     	Packet* make_packet();		
 	
 		IPAddress _srcIP;
-		IPAddress _dstIP;
-		IPAddress RouterAddress;
-
+        IPAddress _dstIP;
+        IPAddress HomeAgent;
+        IPAddress CareOfAddress;
+        
 		uint32_t _sequence;
 };
 

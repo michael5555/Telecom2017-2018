@@ -31,20 +31,6 @@ struct icmp_router_sollicitation {
     uint32_t reserved;
 
 };
-struct aa_ext_flags{
-    uint8_t R : 1;
-    uint8_t B : 1;
-    uint8_t H : 1;
-    uint8_t F : 1;
-    uint8_t M : 1;
-    uint8_t G : 1;
-    uint8_t r : 1;
-    uint8_t T : 1;
-    uint8_t U : 1;
-    uint8_t X : 1;
-
-    uint8_t reserved : 6;
-};
 
 // Mobility Agent Advertisement extension
 struct agent_advertisement_extension {
@@ -55,8 +41,29 @@ struct agent_advertisement_extension {
     uint16_t registration_lifetime;
     uint16_t flags_and_reserved;
 
+};
 
+struct mobile_ip_registration_request {
 
+    uint8_t type;
+    uint8_t flags;
+    uint16_t lifetime;
+    IPAddress home_address;    
+    IPAddress home_agent;
+    IPAddress care_of_address;
+    uint64_t id;
+    
+};
+
+struct mobile_ip_registration_reply {
+    
+        uint8_t type;
+        uint8_t code;
+        uint16_t lifetime;
+        IPAddress home_address;    
+        IPAddress home_agent;
+        uint64_t id;
+        
 };
 
 #endif
