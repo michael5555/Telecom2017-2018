@@ -16,8 +16,11 @@ elementclass MobileNode {
 	$address, $gateway, $home_agent |
 
 	MNState :: MNInfoBase(MYADDRESS $address, HAPUBLIC $home_agent, HAPRIVATE $gateway);
-	adverthandler :: MNAdvertisementHandler(MNBASE MNState);
-	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState);
+	requestsource :: NodeRequestGenerator(MNBASE MNState);
+
+
+	adverthandler :: MNAdvertisementHandler(MNBASE MNState,RGEN requestsource);
+	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
 
 	// Shared IP input path
 	ip :: Strip(14)
@@ -64,6 +67,11 @@ elementclass MobileNode {
 		-> Discard
 
 	sollicitationsource :: NodeSollicitationGenerator(MNBASE MNState)
-	-> CheckIPHeader()
+	-> CheckIPHeader
+	-> arpq
+
+	requestsource
+	-> CheckIPHeader
+	-> CheckUDPHeader
 	-> arpq
 }

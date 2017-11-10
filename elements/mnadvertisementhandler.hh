@@ -9,6 +9,8 @@
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include "mninfobase.hh"
+#include "noderequestgenerator.hh"
+
 
 CLICK_DECLS
 
@@ -27,6 +29,7 @@ class MNAdvertisementHandler : public Element {
 	private:
 		void handleAdvertisement(Packet* p);
 		MNInfoBase* MNBase;
+		NodeRequestGenerator* RGen;
 
 };
 

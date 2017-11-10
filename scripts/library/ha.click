@@ -14,6 +14,7 @@ elementclass Agent {
 	$private_address, $public_address, $gateway |
 
 	MAState :: MAInfoBase(PUBLIC $public_address, PRIVATE $private_address);
+	requesthandler :: MARequestHandler(MABASE MAState)
 
 	// Shared IP input path and routing table
 	ip :: Strip(14)
@@ -67,6 +68,7 @@ elementclass Agent {
 
 	// Local delivery
 	rt[0]
+		-> requesthandler
 		-> [2]output
 	
 	// Forwarding paths per interface

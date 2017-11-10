@@ -21,9 +21,12 @@ MNAdvertisementHandler::MNAdvertisementHandler() : MNBase(0) {}
 MNAdvertisementHandler::~MNAdvertisementHandler() {}
 
 int MNAdvertisementHandler::configure(Vector<String>& conf, ErrorHandler* errh) {
-    if (cp_va_kparse(conf, this, errh, "MNBASE", cpkM+cpkP, cpElementCast, "MNInfoBase", &MNBase, cpEnd) < 0) return -1;
+    if (cp_va_kparse(conf, this, errh, "MNBASE", cpkM+cpkP, cpElementCast, "MNInfoBase", &MNBase,
+    "RGEN", cpkM+cpkP, cpElementCast, "NodeRequestGenerator", &RGen, cpEnd) < 0) return -1;
     
     if (MNBase == 0) return errh->error("Wrong argument, should be an MNInfoBase element.");
+    if (RGen == 0) return errh->error("Wrong argument, should be an NodeRequestGenerator element.");
+    
 
     return 0;
 }
@@ -68,6 +71,7 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
 
         MNBase->setHomeStatus(false);
         click_chatter("Mobile Node --  I am away.\n");
+        RGen->sendRequest(iph->ip_src);
     }
     
 }

@@ -7,7 +7,6 @@
 #include <clicknet/ether.h>
 #include <clicknet/icmp.h>
 #include <click/timer.hh>
-#include "mninfobase.hh"
 #include "masollicitationhandler.hh"
 #include "mobile_ip_packets.h"
 #include <iostream>
