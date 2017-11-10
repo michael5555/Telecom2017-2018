@@ -45,14 +45,14 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     memset(q->data(), '\0', sizeof(click_ip) + sizeof(click_udp)
     + sizeof(mobile_ip_registration_request));
 
-    click_ip *iph = (click_ip *)q->data();
+   /*click_ip *iph = (click_ip *)q->data();
     
     iph->ip_v = 4;
     iph->ip_hl = sizeof(click_ip) >> 2;
     iph->ip_len = htons(q->length());
-    uint16_t ip_id = ((_sequence) % 0xFFFF) /*+ 1*/; // ensure ip_id != 0
+    uint16_t ip_id = ((_sequence) % 0xFFFF) ; // ensure ip_id != 0
     iph->ip_id = htons(ip_id);
-    iph->ip_p = IP_PROTO_UDP; /* udp */
+    iph->ip_p = IP_PROTO_UDP; 
     iph->ip_ttl = 64;
     iph->ip_src = MNBase->getMyAddress();
     iph->ip_dst = destination;
@@ -63,10 +63,10 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     udph->uh_sport = htons(56026);
     udph->uh_dport = htons(434);
     udph->uh_ulen = htons(32);
-    udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));
+    udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));*/
     
 
-    mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(udph + 1);
+    mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(q->data);
 
     mipr->type = 1;
     mipr->flags = 0x00;
@@ -78,7 +78,7 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
 
     _sequence++; 
     
-    q->set_dst_ip_anno(destination);
+    //q->set_dst_ip_anno(destination);
     
     return q;
    
