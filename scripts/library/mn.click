@@ -72,6 +72,5 @@ elementclass MobileNode {
 
 	requestsource
 	-> CheckIPHeader
-	-> CheckUDPHeader
 	-> arpq
 }
