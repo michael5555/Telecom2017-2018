@@ -55,7 +55,7 @@ struct mobile_ip_registration_request {
     
 };
 
-struct mobile_ip_registration_request {
+struct mobile_ip_registration_reply {
     
         uint8_t type;
         uint8_t code;
