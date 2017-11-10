@@ -4,6 +4,8 @@
 
 #include <click/error.hh>
 #include <clicknet/ip.h>
+#include <clicknet/udp.h>
+
 #include <clicknet/ether.h>
 #include <clicknet/icmp.h>
 #include <click/timer.hh>

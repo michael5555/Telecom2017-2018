@@ -57,12 +57,12 @@ struct mobile_ip_registration_request {
 
 struct mobile_ip_registration_reply {
     
-        uint8_t type;
-        uint8_t code;
-        uint16_t lifetime;
-        IPAddress home_address;    
-        IPAddress home_agent;
-        uint64_t id;
+    uint8_t type;
+    uint8_t code;
+    uint16_t lifetime;
+    IPAddress home_address;    
+    IPAddress home_agent;
+    uint64_t id;
         
 };
 
