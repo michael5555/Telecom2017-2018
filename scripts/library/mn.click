@@ -71,7 +71,7 @@ elementclass MobileNode {
 	-> arpq
 
 	requestsource
-	-> UDPIPEncap(SRC $address, SPORT 56026, DST 192.168.3.254 , DPORT 434)
+	-> UDPIPEncap(SRC $address, SPORT 56026, DST 192.168.3.254 , DPORT 434, CHECKSUM true)
 	-> CheckIPHeader
 	-> arpq
 }

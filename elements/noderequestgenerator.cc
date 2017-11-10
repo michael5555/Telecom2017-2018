@@ -42,8 +42,7 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
 
     if (!q)
         return 0;
-    memset(q->data(), '\0', sizeof(click_ip) + sizeof(click_udp)
-    + sizeof(mobile_ip_registration_request));
+    memset(q->data(), '\0', sizeof(mobile_ip_registration_request));
 
    /*click_ip *iph = (click_ip *)q->data();
     
