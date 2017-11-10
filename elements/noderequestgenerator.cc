@@ -69,7 +69,7 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     udph->uh_sum = click_in_cksum_pseudohdr(csum, iph, len);
 
 
-    mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(q->data());
+    mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(udph + 1);
 
     mipr->type = 1;
     mipr->flags = 0x00;
