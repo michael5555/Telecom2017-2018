@@ -64,9 +64,7 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     udph->uh_dport = htons(434);
     uint16_t len = q->length() - sizeof(click_ip);
     udph->uh_ulen = htons(len);
-    udph->uh_sum = 0;
-    unsigned csum = click_in_cksum((unsigned char *)udph, len);
-    udph->uh_sum = click_in_cksum_pseudohdr(csum, iph, len);
+    udph->uh_sum = click_in_cksum((unsigned char *)udph, len);
 
 
     mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(udph + 1);
