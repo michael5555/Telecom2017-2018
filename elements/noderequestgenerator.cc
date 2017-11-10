@@ -60,9 +60,9 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     
     click_udp *udph = (click_udp *)(iph + 1);
     
-    udph->uh_sport = 56026;
-    udph->uh_dport = 434;
-    udph->uh_ulen = 32;
+    udph->uh_sport = htons(56026);
+    udph->uh_dport = htons(434);
+    udph->uh_ulen = htons(32);
     udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));
     
 
