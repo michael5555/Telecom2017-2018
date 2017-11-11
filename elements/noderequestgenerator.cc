@@ -27,7 +27,10 @@ int NodeRequestGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
 }
 
 int NodeRequestGenerator::sendRequest(IPAddress dst){
+    click_chatter("1111111111111\n");
     if (Packet *q = make_packet(dst)) {
+        click_chatter("9999999999\n");
+
  	    output(0).push(q);
         click_chatter("Mobile Node -- sent Mobile IP Registration Request\n");
     }
@@ -35,15 +38,22 @@ int NodeRequestGenerator::sendRequest(IPAddress dst){
 }
 
 Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
+    click_chatter("22222222222\n");
+
     int headroom = sizeof(click_ether);
     
     WritablePacket *q = Packet::make(headroom, 0, sizeof(click_ip) 
     + sizeof(click_udp) + sizeof(mobile_ip_registration_request), 0);
+    click_chatter("3333333333\n");
+
 
     if (!q)
         return 0;
     memset(q->data(), '\0',+ sizeof(click_ip) 
     + sizeof(click_udp) + sizeof(mobile_ip_registration_request));
+
+    click_chatter("444444444444\n");
+
 
    click_ip *iph = (click_ip *)q->data();
     
@@ -57,6 +67,9 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     iph->ip_src = MNBase->getMyAddress();
     iph->ip_dst = destination;
     iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
+
+    click_chatter("555555555555\n");
+
     
     click_udp *udph = (click_udp *)(iph + 1);
     
@@ -65,6 +78,8 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     uint16_t len = q->length() - sizeof(click_ip);
     udph->uh_ulen = htons(len);
     udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));
+    click_chatter("66666666666666\n");
+
 
     mobile_ip_registration_request *mipr = (mobile_ip_registration_request*)(udph + 1);
 
@@ -75,10 +90,14 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     mipr->home_agent = MNBase->getHomeAgentPublic();
     mipr->care_of_address = MNBase->getCareOfAddress();
     mipr->id = htonq(0);
+    click_chatter("77777777777\n");
 
     _sequence++; 
     
     q->set_dst_ip_anno(destination);
+
+    click_chatter("88888888888\n");
+
     
     return q;
    

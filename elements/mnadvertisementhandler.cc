@@ -71,7 +71,7 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
 
         MNBase->setHomeStatus(false);
         click_chatter("Mobile Node --  I am away.\n");
-        //RGen->sendRequest(iph->ip_src);
+        RGen->sendRequest(iph->ip_src);
     }
     
 }
