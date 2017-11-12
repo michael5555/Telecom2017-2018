@@ -127,7 +127,13 @@ elementclass Agent {
 	-> sollicitationhandler :: MASollicitationHandler(MABASE MAState, AAGEN advertisementsource)
 
 	advertisementsource :: AgentAdvertisementGenerator(MABASE MAState)
-	-> CheckIPHeader()
+	-> CheckIPHeader
 	-> private_arpq
+
+	requesthandler[1]
+	-> SetIPChecksum
+	-> CheckIPHeader
+	-> SetUDPChecksum
+	-> public_arpq
 
 }

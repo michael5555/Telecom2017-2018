@@ -1,6 +1,9 @@
 #ifndef CLICK_MOBILEIPPACKETS_H
 #define CLICK_MOBILEIPPACKETS_H
 
+const int REGISTRATION_REQUEST = 1;
+const int REGISTRATION_REPLY = 3;
+
 //ICMP Router Advertisement
 
 struct icmp_router_advertisement {

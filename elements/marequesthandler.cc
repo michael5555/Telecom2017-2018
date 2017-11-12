@@ -33,18 +33,30 @@ void MARequestHandler::push(int, Packet* p) {
 }
 
 void MARequestHandler::handleRequest(Packet* p) {
-    click_ip *iph = (click_ip *)p->data();
+
+    WritablePacket * q = p->uniqueify();
+    click_ip *iph = (click_ip *)q->data();
     if(iph->ip_p != IP_PROTO_UDP){
-        output(0).push(p);
+        output(0).push(q);
         return;
     }
     click_udp* udph = (click_udp *)(iph + 1);
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
-    if (mipr->type != 1)
-        return;
+    if (mipr->type == REGISTRATION_REQUEST){
+        click_chatter("Mobile Agent -- Recieved Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
 
-    click_chatter("Mobile Agent -- Recieved Registration Request.\n");
+        if(mipr->home_agent != MABase->getMyPublicAddress() || mipr->home_agent != MABase->getMyPrivateAddress()) {
+
+            iph->ip_src = mipr->care_of_address;
+            iph->ip_dst = mipr->home_agent;
+            output(1).push(q);
+            click_chatter("Mobile Agent -- relayed Registration Request.\n",MABase->getMyPublicAddress().unparse().c_str());
+
+        }
+
+    
+    }
 
 
 
