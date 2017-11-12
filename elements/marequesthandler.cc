@@ -46,7 +46,7 @@ void MARequestHandler::handleRequest(Packet* p) {
     if (mipr->type == REGISTRATION_REQUEST){
         click_chatter("Mobile Agent -- Recieved Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
 
-        if(mipr->home_agent != MABase->getMyPublicAddress() || mipr->home_agent != MABase->getMyPrivateAddress()) {
+        if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
 
             iph->ip_src = mipr->care_of_address;
             iph->ip_dst = mipr->home_agent;
