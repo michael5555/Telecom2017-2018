@@ -53,6 +53,8 @@ void MARequestHandler::handleRequest(Packet* p) {
         click_chatter("home agent is: %s, my public address is: %s\n",mipr->home_agent.unparse().c_str(),MABase->getMyPublicAddress().unparse().c_str());
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
             click_chatter("1111111111111\n");
+            click_chatter("lalalalalalalala\n");
+
             MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
             click_chatter("222222222222\n");
             ReplyGen->sendReply();

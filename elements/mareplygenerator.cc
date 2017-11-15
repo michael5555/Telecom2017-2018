@@ -32,8 +32,6 @@ int MAReplyGenerator::sendReply(){
     if (Packet *q = make_packet()) {
 
         click_chatter("6666666666666\n");
-
-
  	    output(0).push(q);
         click_chatter("Mobile Agent -- sent Mobile IP Registration Reply\n");
     }
