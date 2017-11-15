@@ -50,7 +50,9 @@ void MARequestHandler::handleRequest(Packet* p) {
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             this->relayRequest(mipr,iph,q);
         }
+        click_chatter("home agent is: %s, my public address is: %s\n",mipr->home_agent.unparse().c_str(),MABase->getMyPublicAddress().unparse().c_str());
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
+            click_chatter("1111111111111\n");
             MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
             ReplyGen->sendReply();
         }
