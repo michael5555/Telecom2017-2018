@@ -51,6 +51,7 @@ Packet* MAReplyGenerator::make_packet() {
     memset(q->data(), '\0',+ sizeof(click_ip) 
     + sizeof(click_udp) + sizeof(mobile_ip_registration_reply));
 
+    localnodeinfo nodeinfo = MABase->getLocalNode();
 
    click_ip *iph = (click_ip *)q->data();
     
@@ -62,7 +63,7 @@ Packet* MAReplyGenerator::make_packet() {
     iph->ip_p = IP_PROTO_UDP; 
     iph->ip_ttl = 64;
     iph->ip_src = MABase->getMyPublicAddress();
-    iph->ip_dst = MABase->getLocalNode()->careofaddress;
+    iph->ip_dst = nodeinfo.careofaddress;
     iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
     
     click_udp *udph = (click_udp *)(iph + 1);
@@ -78,13 +79,13 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->type = 3;
     mipr->code = 0;
     mipr->lifetime = htons(30);
-    mipr->home_address = MABase->getLocalNode()->home_address;
+    mipr->home_address = nodeinfo.home_address;
     mipr->home_agent = MABase->getMyPublicAddress();
     mipr->id = htonq(0);
 
     _sequence++; 
     
-    q->set_dst_ip_anno(MABase->getLocalNode()->careofaddress);
+    q->set_dst_ip_anno(nodeinfo.careofaddress);
 
     click_chatter("5555555555555\n");
 

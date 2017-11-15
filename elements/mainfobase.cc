@@ -10,7 +10,13 @@
 
 CLICK_DECLS
 
-MAInfoBase::MAInfoBase() : MyNode(0) {}
+MAInfoBase::MAInfoBase() :  {
+
+    MyNode.home_address = IPAddress();
+    MyNode.careofaddress = IPAddress();
+    MyNode.lifetime = 0;
+
+}
 
 MAInfoBase::~MAInfoBase() {}
 
@@ -34,9 +40,9 @@ void MAInfoBase::add_handlers() {}
 
 void MAInfoBase::setLocalNode(IPAddress ha, IPAddress coa, int lt){
 
-    MyNode->home_address = ha;
-    MyNode->careofaddress = coa;
-    MyNode->lifetime = lt;
+    MyNode.home_address = ha;
+    MyNode.careofaddress = coa;
+    MyNode.lifetime = lt;
 
 }
 

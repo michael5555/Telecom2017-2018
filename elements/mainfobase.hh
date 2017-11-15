@@ -31,14 +31,14 @@ class MAInfoBase : public Element {
 		IPAddress getMyPrivateAddress() {return MyPrivateAddress;}
 
 		void setLocalNode(IPAddress,IPAddress,int);
-		localnodeinfo* getLocalNode() {return MyNode;}
+		localnodeinfo getLocalNode() {return MyNode;}
 
 		void add_handlers();
 
 	private:
 		IPAddress MyPublicAddress;
 		IPAddress MyPrivateAddress;
-		localnodeinfo* MyNode;
+		localnodeinfo MyNode;
 
 		
 };
