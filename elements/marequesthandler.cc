@@ -54,6 +54,7 @@ void MARequestHandler::handleRequest(Packet* p) {
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
             click_chatter("1111111111111\n");
             MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+            click_chatter("222222222222\n");
             ReplyGen->sendReply();
         }
     }
