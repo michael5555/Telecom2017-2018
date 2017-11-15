@@ -10,7 +10,7 @@
 
 CLICK_DECLS
 
-MAInfoBase::MAInfoBase() {}
+MAInfoBase::MAInfoBase() : MyNode(0) {}
 
 MAInfoBase::~MAInfoBase() {}
 
@@ -31,6 +31,14 @@ int MAInfoBase::configure(Vector<String>& conf, ErrorHandler* errh) {
 }
 
 void MAInfoBase::add_handlers() {}
+
+void MAInfoBase::setLocalNode(IPAddress ha, IPAddress coa, int lt){
+
+    MyNode->home_address = ha;
+    MyNode->careofaddress = coa;
+    MyNode->lifetime = lt;
+
+}
 
 
 

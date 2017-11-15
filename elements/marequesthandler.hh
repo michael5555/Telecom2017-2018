@@ -27,6 +27,7 @@ class MARequestHandler : public Element {
 		
 	private:
 		void handleRequest(Packet* p);
+		void relayRequest(mobile_ip_registration_request*, click_ip*, Packet*);
 		MAInfoBase* MABase;
 
 };

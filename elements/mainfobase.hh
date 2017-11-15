@@ -9,6 +9,13 @@
 #include <click/timer.hh>
 #include <click/vector.hh>
 
+struct localnodeinfo {
+
+	IPAddress home_address;
+	IPAddress careofaddress;
+	int lifetime;
+}
+
 CLICK_DECLS
 
 class MAInfoBase : public Element { 
@@ -23,11 +30,15 @@ class MAInfoBase : public Element {
 		IPAddress getMyPublicAddress() {return MyPublicAddress;}
 		IPAddress getMyPrivateAddress() {return MyPrivateAddress;}
 
+		void setLocalNode(IPAddress,IPAddress,int);
+		localnodeinfo* getLocalNode() {return MyNode;}
+
 		void add_handlers();
 
 	private:
 		IPAddress MyPublicAddress;
 		IPAddress MyPrivateAddress;
+		localnodeinfo* MyNode;
 
 		
 };

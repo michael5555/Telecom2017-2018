@@ -45,23 +45,23 @@ void MARequestHandler::handleRequest(Packet* p) {
 
     if (mipr->type == REGISTRATION_REQUEST){
         click_chatter("Mobile Agent -- Recieved Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
-
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
-
-            iph->ip_src = mipr->care_of_address;
-            iph->ip_dst = mipr->home_agent;
-            output(1).push(q);
-            click_chatter("Mobile Agent -- relayed Registration Request.\n",MABase->getMyPublicAddress().unparse().c_str());
-
+            this->relayRequest(mipr,iph,q);
         }
-
-    
+        else {
+            MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+        }
     }
+}
 
+void MARequestHandler::relayRequest(mobile_ip_registration_request* mipr,click_ip* iph, Packet* q){
+    iph->ip_src = mipr->care_of_address;
+    iph->ip_dst = mipr->home_agent;
+    output(1).push(q);
+    click_chatter("Mobile Agent -- relayed Registration Request.\n",MABase->getMyPublicAddress().unparse().c_str());
 
 
 }
-
 
 CLICK_ENDDECLS
 
