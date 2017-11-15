@@ -14,7 +14,8 @@ elementclass Agent {
 	$private_address, $public_address, $gateway |
 
 	MAState :: MAInfoBase(PUBLIC $public_address, PRIVATE $private_address);
-	requesthandler :: MARequestHandler(MABASE MAState)
+	replygen :: MAReplyGenerator(MABASE MAState)
+	requesthandler :: MARequestHandler(MABASE MAState,REPLYGEN replygen)
 
 	// Shared IP input path and routing table
 	ip :: Strip(14)
@@ -135,5 +136,11 @@ elementclass Agent {
 	-> CheckIPHeader
 	-> SetUDPChecksum
 	-> public_arpq
+
+	replygen
+	-> CheckIPHeader
+	-> SetUDPChecksum
+	-> public_arpq
+
 
 }

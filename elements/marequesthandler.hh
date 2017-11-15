@@ -9,6 +9,8 @@
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include "mainfobase.hh"
+#include "mareplygenerator.hh"
+
 
 
 CLICK_DECLS
@@ -29,6 +31,7 @@ class MARequestHandler : public Element {
 		void handleRequest(Packet* p);
 		void relayRequest(mobile_ip_registration_request*, click_ip*, Packet*);
 		MAInfoBase* MABase;
+		MAReplyGenerator* ReplyGen;
 
 };
 

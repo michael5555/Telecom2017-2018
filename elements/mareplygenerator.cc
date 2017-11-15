@@ -72,8 +72,8 @@ Packet* MAReplyGenerator::make_packet() {
     mobile_ip_registration_reply *mipr = (mobile_ip_registration_reply*)(udph + 1);
 
     mipr->type = 3;
-    mipr->code = 0x00;
-    mipr->lifetime = htons(60);
+    mipr->code = 0;
+    mipr->lifetime = htons(30);
     mipr->home_address = MABase->getLocalNode()->home_address;
     mipr->home_agent = MABase->getMyPublicAddress();
     mipr->id = htonq(0);

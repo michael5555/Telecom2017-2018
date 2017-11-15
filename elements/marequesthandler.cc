@@ -21,10 +21,12 @@ MARequestHandler::MARequestHandler() : MABase(0) {}
 MARequestHandler::~MARequestHandler() {}
 
 int MARequestHandler::configure(Vector<String>& conf, ErrorHandler* errh) {
-    if (cp_va_kparse(conf, this, errh, "MABASE", cpkM+cpkP, cpElementCast, "MAInfoBase", &MABase, cpEnd) < 0) return -1;
+    if (cp_va_kparse(conf, this, errh, "MABASE", cpkM+cpkP, cpElementCast, "MAInfoBase", &MABase,
+    "REPLYGEN", cpkM+cpkP, cpElementCast, "MAReplyGenerator", &ReplyGen,cpEnd) < 0) return -1;
     
     if (MABase == 0) return errh->error("Wrong argument, should be an MAInfoBase element.");
-    
+    if (ReplyGen == 0) return errh->error("Wrong argument, should be an MAReplyGenerator element.");
+
     return 0;
 }
 
@@ -50,7 +52,11 @@ void MARequestHandler::handleRequest(Packet* p) {
         }
         else {
             MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+            ReplyGen->sendReply();
         }
+    }
+    else if(mipr->type == REGISTRATION_REPLY){
+        click_chatter("Mobile Agent -- Recieved Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
     }
 }
 
