@@ -14,7 +14,7 @@ struct localnodeinfo {
 	IPAddress home_address;
 	IPAddress careofaddress;
 	int lifetime;
-}
+};
 
 CLICK_DECLS
 
