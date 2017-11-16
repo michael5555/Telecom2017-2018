@@ -50,15 +50,10 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             this->relayRequest(mipr,iph,q);
         }
-        click_chatter("1111111111111\n");
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
-            click_chatter("222222222222\n");
 
             MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
-            click_chatter("33333333333333\n");
-
             ReplyGen->sendReply();
-            click_chatter("4444444444444\n");
 
         }
     }
