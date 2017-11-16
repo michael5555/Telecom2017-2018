@@ -52,9 +52,7 @@ void MNReplyHandler::handleReply(Packet* p) {
 
 }
 
-  
-
 
 CLICK_ENDDECLS
 
-EXPORT_ELEMENT(MNAdvertisementHandler)
+EXPORT_ELEMENT(MNReplyHandler)
