@@ -21,6 +21,7 @@ elementclass MobileNode {
 
 	adverthandler :: MNAdvertisementHandler(MNBASE MNState,RGEN requestsource);
 	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
+	replyhandler :: MNReplyHandler(MNBASE MNState)
 
 	// Shared IP input path
 	ip :: Strip(14)
@@ -31,6 +32,7 @@ elementclass MobileNode {
 			0.0.0.0/0 $gateway 1,
 			255.0.0.0/4 2)
 		-> adverthandler
+		-> replyhandler
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)

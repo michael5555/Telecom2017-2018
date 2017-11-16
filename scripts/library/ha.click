@@ -15,7 +15,7 @@ elementclass Agent {
 
 	MAState :: MAInfoBase(PUBLIC $public_address, PRIVATE $private_address);
 	replygen :: MAReplyGenerator(MABASE MAState)
-	requesthandler :: MARequestHandler(MABASE MAState,REPLYGEN replygen)
+	registrationhandler :: MARegistrationHandler(MABASE MAState,REPLYGEN replygen)
 
 	// Shared IP input path and routing table
 	ip :: Strip(14)
@@ -69,7 +69,7 @@ elementclass Agent {
 
 	// Local delivery
 	rt[0]
-		-> requesthandler
+		-> registrationhandler
 		-> [2]output
 	
 	// Forwarding paths per interface
@@ -131,7 +131,7 @@ elementclass Agent {
 	-> CheckIPHeader
 	-> private_arpq
 
-	requesthandler[1]
+	registrationhandler[1]
 	-> SetIPChecksum
 	-> CheckIPHeader
 	-> SetUDPChecksum
@@ -141,6 +141,12 @@ elementclass Agent {
 	-> CheckIPHeader
 	-> SetUDPChecksum
 	-> public_arpq
+
+	registrationhandler[2]
+	-> SetIPChecksum
+	-> CheckIPHeader
+	-> SetUDPChecksum
+	-> private_arpq
 
 
 }

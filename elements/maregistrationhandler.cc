@@ -9,18 +9,18 @@
 #include <clicknet/ether.h>
 #include <clicknet/icmp.h>
 #include <click/timer.hh>
-#include "marequesthandler.hh"
+#include "maregistrationhandler.hh"
 #include "mobile_ip_packets.h"
 #include <iostream>
 #include <math.h>
 
 CLICK_DECLS
 
-MARequestHandler::MARequestHandler() : MABase(0) {}
+MARegistrationHandler::MARegistrationHandler() : MABase(0) {}
 
-MARequestHandler::~MARequestHandler() {}
+MARegistrationHandler::~MARegistrationHandler() {}
 
-int MARequestHandler::configure(Vector<String>& conf, ErrorHandler* errh) {
+int MARegistrationHandler::configure(Vector<String>& conf, ErrorHandler* errh) {
     if (cp_va_kparse(conf, this, errh, "MABASE", cpkM+cpkP, cpElementCast, "MAInfoBase", &MABase,
     "REPLYGEN", cpkM+cpkP, cpElementCast, "MAReplyGenerator", &ReplyGen,cpEnd) < 0) return -1;
     
@@ -30,11 +30,11 @@ int MARequestHandler::configure(Vector<String>& conf, ErrorHandler* errh) {
     return 0;
 }
 
-void MARequestHandler::push(int, Packet* p) {
-    this->handleRequest(p);
+void MARegistrationHandler::push(int, Packet* p) {
+    this->handleRegistration(p);
 }
 
-void MARequestHandler::handleRequest(Packet* p) {
+void MARegistrationHandler::handleRegistration(Packet* p) {
 
     WritablePacket * q = p->uniqueify();
     click_ip *iph = (click_ip *)q->data();
@@ -50,7 +50,6 @@ void MARequestHandler::handleRequest(Packet* p) {
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             this->relayRequest(mipr,iph,q);
         }
-        click_chatter("home agent is: %s, my public address is: %s\n",mipr->home_agent.unparse().c_str(),MABase->getMyPublicAddress().unparse().c_str());
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
 
             MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
@@ -59,18 +58,30 @@ void MARequestHandler::handleRequest(Packet* p) {
     }
     else if(mipr->type == REGISTRATION_REPLY){
         click_chatter("Mobile Agent -- Recieved Registration Reply. %s\n",MABase->getMyPublicAddress().unparse().c_str());
+        mobile_ip_registration_reply* mipreply = (mobile_ip_registration_reply*)(udph + 1);
+        if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
+            this->relayReply(mipreply,iph,q);
+
+        }
     }
 }
 
-void MARequestHandler::relayRequest(mobile_ip_registration_request* mipr,click_ip* iph, Packet* q){
+void MARegistrationHandler::relayRequest(mobile_ip_registration_request* mipr,click_ip* iph, Packet* q){
     iph->ip_src = mipr->care_of_address;
     iph->ip_dst = mipr->home_agent;
-    output(1).push(q);
+    output(2).push(q);
     click_chatter("Mobile Agent -- relayed Registration Request.\n",MABase->getMyPublicAddress().unparse().c_str());
 
+}
+
+void MARegistrationHandler::relayReply(mobile_ip_registration_reply* mipreply,click_ip* iph, Packet* q){
+    iph->ip_src = MABase->getMyPrivateAddress();
+    iph->ip_dst = mipreply->home_address;
+    output(1).push(q);
+    click_chatter("Mobile Agent -- relayed Registration Reply.\n",MABase->getMyPublicAddress().unparse().c_str());
 
 }
 
 CLICK_ENDDECLS
 
-EXPORT_ELEMENT(MARequestHandler)
+EXPORT_ELEMENT(MARegistrationHandler)

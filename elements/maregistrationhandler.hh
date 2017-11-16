@@ -1,5 +1,5 @@
-#ifndef CLICK_MAREQUESTHANDLER_HH
-#define CLICK_MAREQUESTHANDLER_HH
+#ifndef CLICK_MAREGISTRATIONHANDLER_HH
+#define CLICK_MAREGISTRATIONHANDLER_HH
 
 #include <click/config.h>
 #include <click/confparse.hh>
@@ -15,21 +15,23 @@
 
 CLICK_DECLS
 
-class MARequestHandler : public Element { 
+class MARegistrationHandler : public Element { 
 	public:
-		MARequestHandler();
-		~MARequestHandler();
+		MARegistrationHandler();
+		~MARegistrationHandler();
 		
-		const char *class_name() const	{ return "MARequestHandler"; }
-		const char *port_count() const	{ return "1/2"; }
+		const char *class_name() const	{ return "MARegistrationHandler"; }
+		const char *port_count() const	{ return "1/3"; }
 		const char *processing() const	{ return PUSH; }
 		int configure(Vector<String>&, ErrorHandler*);
 
         void push(int, Packet*);
 		
 	private:
-		void handleRequest(Packet* p);
+		void handleRegistration(Packet* p);
 		void relayRequest(mobile_ip_registration_request*, click_ip*, Packet*);
+		void relayReply(mobile_ip_registration_reply*, click_ip*, Packet*);
+
 		MAInfoBase* MABase;
 		MAReplyGenerator* ReplyGen;
 
