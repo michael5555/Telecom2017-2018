@@ -27,11 +27,8 @@ int MAReplyGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
 }
 
 int MAReplyGenerator::sendReply(){
-    click_chatter("33333333333\n");
 
     if (Packet *q = make_packet()) {
-
-        click_chatter("6666666666666\n");
  	    output(0).push(q);
         click_chatter("Mobile Agent -- sent Mobile IP Registration Reply\n");
     }
@@ -39,7 +36,6 @@ int MAReplyGenerator::sendReply(){
 }
 
 Packet* MAReplyGenerator::make_packet() {
-    click_chatter("444444444444\n");
 
     int headroom = sizeof(click_ether);
     
@@ -86,8 +82,6 @@ Packet* MAReplyGenerator::make_packet() {
     _sequence++; 
     
     q->set_dst_ip_anno(nodeinfo.careofaddress);
-
-    click_chatter("5555555555555\n");
 
     return q;
    
