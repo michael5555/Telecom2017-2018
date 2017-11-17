@@ -58,6 +58,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
             else {
                 MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
             }
+            click_chatter("local node's coa is: %s", MABase->getLocalNode().careofaddress);
             ReplyGen->sendReply();
 
         }
