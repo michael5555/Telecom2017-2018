@@ -29,7 +29,11 @@ int MAReplyGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
 int MAReplyGenerator::sendReply(){
 
     if (Packet *q = make_packet()) {
- 	    output(0).push(q);
+        click_ip *iph = (click_ip *)q->data();
+        if( iph->ip_src == MABase->getMyPublicAddress())
+ 	        output(0).push(q);
+        else if(iph->ip_src == MABase->getMyPrivateAddress())
+            output(1).push(q);
         click_chatter("Mobile Agent -- sent Mobile IP Registration Reply\n");
     }
     return 0;
@@ -49,9 +53,13 @@ Packet* MAReplyGenerator::make_packet() {
 
     localnodeinfo nodeinfo = MABase->getLocalNode();
     IPAddress dst = IPAddress();
+    IPAddress src = IPAddress();
+
     if(nodeinfo.careofaddress ==  MABase->getMyPublicAddress()) {
+        src = MABase->getMyPrivateAddress();
         dst = nodeinfo.home_address;
     } else {
+        src = MABase->getMyPublicAddress();
         dst = nodeinfo.careofaddress;
     }
 
@@ -64,7 +72,7 @@ Packet* MAReplyGenerator::make_packet() {
     iph->ip_id = htons(ip_id);
     iph->ip_p = IP_PROTO_UDP; 
     iph->ip_ttl = 64;
-    iph->ip_src = MABase->getMyPublicAddress();
+    iph->ip_src = src;
     iph->ip_dst = dst;
     iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
     

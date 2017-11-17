@@ -142,6 +142,11 @@ elementclass Agent {
 	-> SetUDPChecksum
 	-> public_arpq
 
+	replygen[1]
+	-> CheckIPHeader
+	-> SetUDPChecksum
+	-> private_arpq
+
 	registrationhandler[2]
 	-> SetIPChecksum
 	-> CheckIPHeader

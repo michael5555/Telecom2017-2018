@@ -58,7 +58,6 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
             else {
                 MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
             }
-            click_chatter("local node's coa is: %s", MABase->getLocalNode().careofaddress);
             ReplyGen->sendReply();
 
         }
@@ -68,7 +67,6 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
         mobile_ip_registration_reply* mipreply = (mobile_ip_registration_reply*)(udph + 1);
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             this->relayReply(mipreply,iph,q);
-
         }
     }
 }
