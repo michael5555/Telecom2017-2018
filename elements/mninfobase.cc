@@ -27,6 +27,8 @@ int MNInfoBase::configure(Vector<String>& conf, ErrorHandler* errh) {
             .read("HAPRIVATE", HomeAgentPrivate)
             .complete() < 0) return -1;
 
+    CareOfAddress = HomeAgentPublic;
+    CurrentRouter = HomeAgentPrivate;
     return 0;
 }
 
@@ -37,8 +39,8 @@ void MNInfoBase::setCurrentRouter(IPAddress addr) {
 
 void MNInfoBase::setCareOfAddress(IPAddress addr) {
     
-        CareOfAddress = addr;
-    }
+    CareOfAddress = addr;
+}
 
 void MNInfoBase::setHomeStatus(bool hs) {
 
@@ -49,8 +51,6 @@ int MNInfoBase::setCurrentLifeTime(int lt) {
 
     CurrentLifeTime = lt;
 }
-
-void MNInfoBase::add_handlers() {}
 
 CLICK_ENDDECLS
 EXPORT_ELEMENT(MNInfoBase)

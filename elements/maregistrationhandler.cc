@@ -52,7 +52,12 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
         }
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
 
-            MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+            if( iph->ip_src == mipr->home_address) {
+                MABase->setLocalNode(mipr->home_address,mipr->home_agent,mipr->lifetime);
+            }
+            else {
+                MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+            }
             ReplyGen->sendReply();
 
         }

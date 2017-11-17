@@ -35,8 +35,6 @@ class MNInfoBase : public Element {
 		int getCurrentLifeTime() {return CurrentLifeTime;}
 		int setCurrentLifeTime(int); 
 
-		void add_handlers();
-
 	private:
 		IPAddress MyAddress;
 		bool homestatus;

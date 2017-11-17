@@ -59,13 +59,15 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
     MNBase->setCurrentLifeTime(aa_ext->registration_lifetime);
     
     IPAddress *coa = (IPAddress*)(aa_ext + 1);
-    MNBase->setCareOfAddress(*coa);
+    if(*coa != MNBase->getHomeAgentPublic()){
+        MNBase->setCareOfAddress(*coa);
+    }
 
     if(MNBase->getCurrentRouter() == MNBase->getHomeAgentPublic() || MNBase->getCurrentRouter() == MNBase->getHomeAgentPrivate())
     {
         MNBase->setHomeStatus(true);
         click_chatter("Mobile Node -- I am home.\n");
-        
+        RGen->sendRequest(MNBase->getHomeAgentPrivate());
     }
     else {
 

@@ -48,8 +48,14 @@ Packet* MAReplyGenerator::make_packet() {
     + sizeof(click_udp) + sizeof(mobile_ip_registration_reply));
 
     localnodeinfo nodeinfo = MABase->getLocalNode();
+    IPAddress dst = IPAddress();
+    if(nodeinfo.careofaddress ==  MABase->getMyPublicAddress()) {
+        dst = nodeinfo.home_address;
+    } else {
+        dst = nodeinfo.careofaddress;
+    }
 
-   click_ip *iph = (click_ip *)q->data();
+    click_ip *iph = (click_ip *)q->data();
     
     iph->ip_v = 4;
     iph->ip_hl = sizeof(click_ip) >> 2;
@@ -59,7 +65,7 @@ Packet* MAReplyGenerator::make_packet() {
     iph->ip_p = IP_PROTO_UDP; 
     iph->ip_ttl = 64;
     iph->ip_src = MABase->getMyPublicAddress();
-    iph->ip_dst = nodeinfo.careofaddress;
+    iph->ip_dst = dst;
     iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
     
     click_udp *udph = (click_udp *)(iph + 1);
@@ -81,7 +87,7 @@ Packet* MAReplyGenerator::make_packet() {
 
     _sequence++; 
     
-    q->set_dst_ip_anno(nodeinfo.careofaddress);
+    q->set_dst_ip_anno(dst);
 
     return q;
    

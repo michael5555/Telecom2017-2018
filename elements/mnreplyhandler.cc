@@ -42,6 +42,9 @@ void MNReplyHandler::handleReply(Packet* p) {
 
         if(mipr->type == REGISTRATION_REPLY){
             click_chatter("Mobile Node -- recieved registration reply %s",MNBase->getMyAddress().unparse().c_str());
+            if(MNBase->getHomeStatus()){
+                MNBase->setCareOfAddress(MNBase->getHomeAgentPublic());
+            }
             return;
         }
         return;
