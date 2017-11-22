@@ -107,14 +107,12 @@ elementclass Agent {
 		-> icmpclass;
 
 	icmpclass
-		-> Print(LABEL "ICMP ECHOES HERE", 0)
 		-> StripIPHeader
 		-> CheckIPHeader
 		-> private_arpq;
 
 
 	icmpclass[1]
-		-> Print(LABEL "OTHER IP THERE", 0)
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
@@ -170,9 +168,7 @@ elementclass Agent {
 
 	echosorter[1]
 	-> IPEncap(PROTO ipip, SRC 192.168.0.2, DST 192.168.0.3)
-	-> DropBroadcasts
-	-> FixIPSrc($public_address)
-	-> DecIPTTL
+	-> CheckIPHeader
 	-> public_arpq
 
 }
