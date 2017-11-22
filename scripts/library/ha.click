@@ -169,8 +169,7 @@ elementclass Agent {
 	-> private_arpq
 
 	echosorter[1]
-	-> IPEncap(PROTO ipip, SRC 192.168.0.2, DST 192.168.0.3)
-	-> IPPrint(LABEL "ENCAPSULATED ECHO")
+	-> IPsecEncap(ipip, 192.168.0.2, 192.168.0.3)
 	-> ToDump(encaptest.pcap)
 	-> public_arpq
 
