@@ -107,12 +107,14 @@ elementclass Agent {
 		-> icmpclass;
 
 	icmpclass
+		-> IPPrint(LABEL "RECIEVED ECHO HERE")
 		-> StripIPHeader
 		-> CheckIPHeader
 		-> private_arpq;
 
 
 	icmpclass[1]
+		-> IPPrint(LABEL "OTHER IP PACKETS HERE")
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
@@ -168,7 +170,8 @@ elementclass Agent {
 
 	echosorter[1]
 	-> IPEncap(PROTO ipip, SRC 192.168.0.2, DST 192.168.0.3)
-	-> CheckIPHeader
+	-> IPPrint(LABEL "ENCAPSULATED ECHO")
+	-> ToDump(encaptest.pcap)
 	-> public_arpq
 
 }
