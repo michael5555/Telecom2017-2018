@@ -60,7 +60,6 @@ elementclass Agent {
 		-> [1]output;
 
 	public_arpq :: ARPQuerier($public_address)
-		-> ToDump(encaptest.pcap)
 		-> [1]output;
 
 	public_class[1]
@@ -74,6 +73,12 @@ elementclass Agent {
 	// Local delivery
 	rt[0]
 		-> registrationhandler
+		-> icmpclass
+		-> StripIPHeader
+		-> CheckIPHeader
+		-> private_arpq
+
+	icmpclass[1]
 		-> [2]output
 	
 	// Forwarding paths per interface
@@ -105,17 +110,6 @@ elementclass Agent {
 	
 
 	rt[2]
-		-> icmpclass;
-
-	icmpclass
-		-> IPPrint(LABEL "RECIEVED ECHO HERE")
-		-> StripIPHeader
-		-> CheckIPHeader
-		-> private_arpq;
-
-
-	icmpclass[1]
-		-> IPPrint(LABEL "OTHER IP PACKETS HERE")
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
