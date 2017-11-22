@@ -60,6 +60,7 @@ elementclass Agent {
 		-> [1]output;
 
 	public_arpq :: ARPQuerier($public_address)
+		-> ToDump(encaptest.pcap)
 		-> [1]output;
 
 	public_class[1]
@@ -169,8 +170,7 @@ elementclass Agent {
 	-> private_arpq
 
 	echosorter[1]
-	-> IPsecEncap(ipip, 192.168.0.2, 192.168.0.3)
-	-> ToDump(encaptest.pcap)
+	-> IPEncap(ipip, 192.168.0.2, 192.168.0.3)
 	-> public_arpq
 
 }
