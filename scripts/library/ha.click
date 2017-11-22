@@ -16,6 +16,7 @@ elementclass Agent {
 	MAState :: MAInfoBase(PUBLIC $public_address, PRIVATE $private_address);
 	replygen :: MAReplyGenerator(MABASE MAState)
 	registrationhandler :: MARegistrationHandler(MABASE MAState,REPLYGEN replygen)
+	echosorter :: MAICMPEchoSorter(MABASE MAState)
 
 	// Shared IP input path and routing table
 	ip :: Strip(14)
@@ -74,6 +75,7 @@ elementclass Agent {
 	
 	// Forwarding paths per interface
 	rt[1]
+		-> echosorter
 		-> DropBroadcasts
 		-> private_paint :: PaintTee(1)
 		-> private_ipgw :: IPGWOptions($private_address)
@@ -153,5 +155,7 @@ elementclass Agent {
 	-> SetUDPChecksum
 	-> private_arpq
 
+	echosorter[1]
+	-> Discard
 
 }
