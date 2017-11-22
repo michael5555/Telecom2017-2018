@@ -107,12 +107,14 @@ elementclass Agent {
 		-> icmpclass;
 
 	icmpclass
+		-> Print(LABEL "ICMP ECHOES HERE", 0)
 		-> StripIPHeader
 		-> CheckIPHeader
 		-> private_arpq;
 
 
 	icmpclass[1]
+		-> Print(LABEL "OTHER IP THERE", 0)
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
