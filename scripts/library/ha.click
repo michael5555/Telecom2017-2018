@@ -18,6 +18,8 @@ elementclass Agent {
 	registrationhandler :: MARegistrationHandler(MABASE MAState,REPLYGEN replygen)
 	echosorter :: MAICMPEchoSorter(MABASE MAState)
 
+	icmpclass :: IPClassifier(icmp type echo or icmp type echo-reply);
+
 	// Shared IP input path and routing table
 	ip :: Strip(14)
 		-> CheckIPHeader
@@ -102,6 +104,15 @@ elementclass Agent {
 	
 
 	rt[2]
+		-> icmpclass;
+
+	icmpclass
+		-> StripIPHeader
+		-> CheckIPHeader
+		-> private_arpq;
+
+
+	icmpclass[1]
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
@@ -156,6 +167,13 @@ elementclass Agent {
 	-> private_arpq
 
 	echosorter[1]
-	-> Discard
+	-> IPEncap(PROTO ipip, SRC 192.168.0.2, DST SRC 192.168.0.3)
+	-> DropBroadcasts
+	-> public_paint :: PaintTee(2)
+	-> public_ipgw :: IPGWOptions($public_address)
+	-> FixIPSrc($public_address)
+	-> public_ttl :: DecIPTTL
+	-> public_frag :: IPFragmenter(1500)
+	-> public_arpq
 
 }

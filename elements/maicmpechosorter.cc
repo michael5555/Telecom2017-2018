@@ -30,10 +30,9 @@ int MAICMPEchoSorter::configure(Vector<String>& conf, ErrorHandler* errh) {
 void MAICMPEchoSorter::push(int, Packet* p) {
 
     click_ip *iph = (click_ip *)p->data();
-    if (iph->ip_p = IP_PROTO_ICMP) {
+    if (iph->ip_p == IP_PROTO_ICMP) {
         click_icmp_sequenced* icmph = (click_icmp_sequenced*)(iph + 1);
         if (icmph->icmp_type == ICMP_ECHO || icmph->icmp_type == ICMP_ECHOREPLY) {
-            click_chatter("recieved ICMP echo. %s",MABase->getMyPublicAddress().unparse().c_str());
             localnodeinfo localinfo = MABase->getLocalNode();
             if(localinfo.careofaddress != MABase->getMyPublicAddress() && localinfo.home_address != IPAddress()){
                 click_chatter("tunneling ICMP echo. %s",MABase->getMyPublicAddress().unparse().c_str());
