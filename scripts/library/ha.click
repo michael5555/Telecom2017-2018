@@ -18,8 +18,7 @@ elementclass Agent {
 	registrationhandler :: MARegistrationHandler(MABASE MAState,REPLYGEN replygen)
 	echosorter :: MAICMPEchoSorter(MABASE MAState)
 
-	icmpclass :: IPClassifier((icmp type echo or icmp type echo-reply) and (host $public_address),-);
-	icmpclass2 :: IPClassifier((icmp type echo or icmp type echo-reply) and (host $public_address),-);
+	icmpclass :: IPClassifier( ip proto ipip and dst host $public_address,-);
 
 
 	// Shared IP input path and routing table
