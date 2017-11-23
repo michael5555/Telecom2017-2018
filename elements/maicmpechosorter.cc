@@ -35,7 +35,6 @@ void MAICMPEchoSorter::push(int, Packet* p) {
         if (icmph->icmp_type == ICMP_ECHO || icmph->icmp_type == ICMP_ECHOREPLY) {
             localnodeinfo localinfo = MABase->getLocalNode();
             if(localinfo.careofaddress != MABase->getMyPublicAddress() && localinfo.home_address != IPAddress()){
-                click_chatter("tunneling ICMP echo. %s",MABase->getMyPublicAddress().unparse().c_str());
                 output(1).push(p);
                 return;
             }
