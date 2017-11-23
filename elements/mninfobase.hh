@@ -7,6 +7,7 @@
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include <click/vector.hh>
+#include <click/etheraddress.hh>
 
 CLICK_DECLS
 
@@ -29,6 +30,9 @@ class MNInfoBase : public Element {
 		IPAddress getCurrentRouter() {return CurrentRouter;}
 		void setCurrentRouter(IPAddress);
 
+		uint8_t* getCurrentRouterEthernet() {return CurrentRouterEthernet;}
+		void setCurrentRouterEthernet(uint8_t*);
+
 		IPAddress getCareOfAddress() {return CareOfAddress;}
 		void setCareOfAddress(IPAddress);
 
@@ -43,6 +47,7 @@ class MNInfoBase : public Element {
 		IPAddress HomeAgentPrivate;
 		
 		IPAddress CurrentRouter;
+		uint8_t CurrentRouterEthernet[6];
 		IPAddress CareOfAddress;
 		
 		int CurrentLifeTime;		

@@ -18,8 +18,9 @@ elementclass MobileNode {
 	MNState :: MNInfoBase(MYADDRESS $address, HAPUBLIC $home_agent, HAPRIVATE $gateway);
 	requestsource :: NodeRequestGenerator(MNBASE MNState);
 
+	advertethernethandler :: MNAdvertisementEthernetHandler(MNBASE MNState,RGEN requestsource);
 
-	adverthandler :: MNAdvertisementHandler(MNBASE MNState,RGEN requestsource);
+	adverthandler :: MNAdvertisementHandler(MNBASE MNState);
 	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
 	replyhandler :: MNReplyHandler(MNBASE MNState)
 
@@ -64,6 +65,7 @@ elementclass MobileNode {
 		-> [1]arpq;
 
 	in_cl[2]
+		-> advertethernethandler
 		-> ip;
 
 	rt[2]

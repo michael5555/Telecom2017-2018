@@ -37,6 +37,17 @@ void MNInfoBase::setCurrentRouter(IPAddress addr) {
     CurrentRouter = addr;
 }
 
+void MNInfoBase::setCurrentRouterEthernet(uint8_t* addr) {
+
+    CurrentRouterEthernet[0] = addr[0];
+    CurrentRouterEthernet[1] = addr[1];
+    CurrentRouterEthernet[2] = addr[2];
+    CurrentRouterEthernet[3] = addr[3];
+    CurrentRouterEthernet[4] = addr[4];
+    CurrentRouterEthernet[5] = addr[5];
+
+}
+
 void MNInfoBase::setCareOfAddress(IPAddress addr) {
     
     CareOfAddress = addr;

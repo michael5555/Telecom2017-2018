@@ -38,7 +38,7 @@ void MNAdvertisementHandler::push(int, Packet* p) {
 void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
 
     click_ip *iph = (click_ip *)p->data();
-    icmp_router_advertisement* icmph = (icmp_router_advertisement*)(p->data() + p->ip_header_length());
+    icmp_router_advertisement* icmph = (icmp_router_advertisement*)(iph + 1);
     
 
     if(iph->ip_p != IP_PROTO_ICMP) {
@@ -54,6 +54,7 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
     }
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
     MNBase->setCurrentRouter(rapl->router_address);
+
 
     agent_advertisement_extension *aa_ext = (agent_advertisement_extension*)(rapl + 1);
     MNBase->setCurrentLifeTime(aa_ext->registration_lifetime);

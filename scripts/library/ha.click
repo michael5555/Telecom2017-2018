@@ -77,6 +77,7 @@ elementclass Agent {
 		-> icmpclass
 		-> StripIPHeader
 		-> CheckIPHeader
+		-> MarkIPHeader
 		-> private_arpq
 
 	icmpclass[1]
