@@ -18,9 +18,10 @@ elementclass MobileNode {
 	MNState :: MNInfoBase(MYADDRESS $address, HAPUBLIC $home_agent, HAPRIVATE $gateway);
 	requestsource :: NodeRequestGenerator(MNBASE MNState);
 
-	advertethernethandler :: MNAdvertisementEthernetHandler(MNBASE MNState,RGEN requestsource);
+	advertethernethandler :: MNAdvertisementEthernetHandler(MNBASE MNState);
+	ethsetter :: MNEchoReplyEthernetSetter(MNBASE MNState)
 
-	adverthandler :: MNAdvertisementHandler(MNBASE MNState);
+	adverthandler :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
 	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
 	replyhandler :: MNReplyHandler(MNBASE MNState)
 
@@ -34,7 +35,6 @@ elementclass MobileNode {
 			255.0.0.0/4 2)
 		-> adverthandler
 		-> replyhandler
-		-> ToDump(mnencaptest1.pcap,ENCAP IP)
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)
@@ -42,7 +42,7 @@ elementclass MobileNode {
 		-> ttl :: DecIPTTL
 		-> frag :: IPFragmenter(1500)
 		-> arpq :: ARPQuerier($address)
-		-> ToDump(mnencaptest2.pcap)
+		-> ethsetter
 		-> output;
 
 	ipgw[1]	-> ICMPError($address, parameterproblem)

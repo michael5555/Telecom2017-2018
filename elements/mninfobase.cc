@@ -58,7 +58,7 @@ void MNInfoBase::setHomeStatus(bool hs) {
     homestatus = hs;
 }
 
-int MNInfoBase::setCurrentLifeTime(int lt) {
+void MNInfoBase::setCurrentLifeTime(int lt) {
 
     CurrentLifeTime = lt;
 }

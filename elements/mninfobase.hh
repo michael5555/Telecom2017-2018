@@ -37,7 +37,7 @@ class MNInfoBase : public Element {
 		void setCareOfAddress(IPAddress);
 
 		int getCurrentLifeTime() {return CurrentLifeTime;}
-		int setCurrentLifeTime(int); 
+		void setCurrentLifeTime(int); 
 
 	private:
 		IPAddress MyAddress;
