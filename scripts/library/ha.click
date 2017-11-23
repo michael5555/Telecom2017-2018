@@ -19,6 +19,8 @@ elementclass Agent {
 	echosorter :: MAICMPEchoSorter(MABASE MAState)
 
 	icmpclass :: IPClassifier((icmp type echo or icmp type echo-reply) and (host $public_address),-);
+	icmpclass2 :: IPClassifier((icmp type echo or icmp type echo-reply) and (host $public_address),-);
+
 
 	// Shared IP input path and routing table
 	ip :: Strip(14)
@@ -36,7 +38,7 @@ elementclass Agent {
 	
 	// Input and output paths for interface 0
 	input
-		-> ToDump(encaptest2.pcap)
+		-> Print(LABEL "recieved ethernet packet on private network")
 		-> HostEtherFilter($private_address)
 		-> private_class :: Classifier(12/0806 20/0001, 12/0806 20/0002, 12/0800)
 		-> ARPResponder($private_address)
@@ -55,14 +57,13 @@ elementclass Agent {
 
 	// Input and output paths for interface 1
 	input[1]
-		-> ToDump(encaptest3.pcap)
+		-> Print(LABEL "recieved ethernet packet on public network")
 		-> HostEtherFilter($public_address)
 		-> public_class :: Classifier(12/0806 20/0001, 12/0806 20/0002, 12/0800)
 		-> ARPResponder($public_address)
 		-> [1]output;
 
 	public_arpq :: ARPQuerier($public_address)
-		-> ToDump(encaptest.pcap)
 		-> [1]output;
 
 	public_class[1]
@@ -75,6 +76,7 @@ elementclass Agent {
 
 	// Local delivery
 	rt[0]
+		-> IPPrint(LABEL "recieved IP packet for router itself")
 		-> registrationhandler
 		-> icmpclass
 		-> StripIPHeader
@@ -86,6 +88,7 @@ elementclass Agent {
 	
 	// Forwarding paths per interface
 	rt[1]
+		-> IPPrint(LABEL "recieved IP packet for private network")
 		-> echosorter
 		-> DropBroadcasts
 		-> private_paint :: PaintTee(1)
@@ -113,6 +116,15 @@ elementclass Agent {
 	
 
 	rt[2]
+		-> IPPrint(LABEL "recieved IP packet for public network")
+		-> icmpclass2;
+
+	icmpclass2
+		-> StripIPHeader
+		-> CheckIPHeader
+		-> private_arpq
+
+	icmpclass2[1]
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
