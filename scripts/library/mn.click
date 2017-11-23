@@ -33,6 +33,7 @@ elementclass MobileNode {
 			255.0.0.0/4 2)
 		-> adverthandler
 		-> replyhandler
+		-> ToDump(mnencaptest1.pcap,ENCAP IP)
 		-> [1]output;
 
 	rt[1]	-> ipgw :: IPGWOptions($address)
@@ -40,6 +41,7 @@ elementclass MobileNode {
 		-> ttl :: DecIPTTL
 		-> frag :: IPFragmenter(1500)
 		-> arpq :: ARPQuerier($address)
+		-> ToDump(mnencaptest2.pcap)
 		-> output;
 
 	ipgw[1]	-> ICMPError($address, parameterproblem)

@@ -73,13 +73,9 @@ elementclass Agent {
 
 	// Local delivery
 	rt[0]
-		-> IPPrint(LABEL "recieved IP packet for router itself")
 		-> registrationhandler
-		-> IPPrint(LABEL "recieved ICMP packet for router itself")
 		-> icmpclass
-		-> IPPrint(LABEL "relaying ICMP echo to mobile node")
 		-> StripIPHeader
-		-> IPPrint(LABEL "relaying ICMP echo to mobile node with encapsulation stripped")
 		-> CheckIPHeader
 		-> private_arpq
 
