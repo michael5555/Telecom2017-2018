@@ -84,6 +84,7 @@ elementclass Agent {
 	
 	// Forwarding paths per interface
 	rt[1]
+		-> IPPrint(LABEL "IP Packet for private network")
 		-> echosorter
 		-> DropBroadcasts
 		-> private_paint :: PaintTee(1)
@@ -111,6 +112,7 @@ elementclass Agent {
 	
 
 	rt[2]
+		-> IPPrint(LABEL "IP Packet for public network")
 		-> DropBroadcasts
 		-> public_paint :: PaintTee(2)
 		-> public_ipgw :: IPGWOptions($public_address)
