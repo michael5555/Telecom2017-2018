@@ -36,6 +36,7 @@ elementclass Agent {
 	
 	// Input and output paths for interface 0
 	input
+		-> ToDump(encaptest2.pcap)
 		-> HostEtherFilter($private_address)
 		-> private_class :: Classifier(12/0806 20/0001, 12/0806 20/0002, 12/0800)
 		-> ARPResponder($private_address)
@@ -54,12 +55,14 @@ elementclass Agent {
 
 	// Input and output paths for interface 1
 	input[1]
+		-> ToDump(encaptest3.pcap)
 		-> HostEtherFilter($public_address)
 		-> public_class :: Classifier(12/0806 20/0001, 12/0806 20/0002, 12/0800)
 		-> ARPResponder($public_address)
 		-> [1]output;
 
 	public_arpq :: ARPQuerier($public_address)
+		-> ToDump(encaptest.pcap)
 		-> [1]output;
 
 	public_class[1]
