@@ -10,7 +10,7 @@
 
 CLICK_DECLS
 
-MAInfoBase::MAInfoBase() :  {
+MAInfoBase::MAInfoBase() {
 
     MyNode.home_address = IPAddress();
     MyNode.careofaddress = IPAddress();
