@@ -40,7 +40,7 @@ void MASollicitationHandler::handleSollicitation(Packet* p) {
     if (icmph->type != ICMP_ROUTERSOLICIT)
         return;
     IPAddress Advertdst = iph->ip_src;
-    AAGen->sendUnicastAdvertisement(Advertdst);
+    AAGen->sendMultiCastAdvertisement();
 
 }
 

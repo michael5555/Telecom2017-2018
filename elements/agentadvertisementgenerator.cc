@@ -33,8 +33,8 @@ int AgentAdvertisementGenerator::sendAgentAdvertisement(const String& conf, Elem
     return 0;
 }
 
-void AgentAdvertisementGenerator::sendUnicastAdvertisement(IPAddress _dst){
-    if (Packet *q = make_packet(_dst)) {
+void AgentAdvertisementGenerator::sendMultiCastAdvertisement(){
+    if (Packet *q = make_packet(IPAddress("255.255.255.255"))) {
  	    output(0).push(q);
         click_chatter("Mobile Agent -- sent agent advertisement with unicast destination %s\n",MABase->getMyPublicAddress().unparse().c_str());
     }

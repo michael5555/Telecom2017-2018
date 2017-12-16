@@ -78,8 +78,8 @@ Packet* MAReplyGenerator::make_packet() {
     
     click_udp *udph = (click_udp *)(iph + 1);
     
-    udph->uh_sport = htons(56026);
-    udph->uh_dport = htons(434);
+    udph->uh_sport = htons(434);
+    udph->uh_dport = htons(56026);
     uint16_t len = q->length() - sizeof(click_ip);
     udph->uh_ulen = htons(len);
     udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));

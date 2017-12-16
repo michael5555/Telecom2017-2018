@@ -26,7 +26,7 @@ public:
     int configure(Vector<String>&, ErrorHandler*);
 
     static int sendAgentAdvertisement(const String& conf, Element* e, void* thunk, ErrorHandler* errh);
-    void sendUnicastAdvertisement(IPAddress);
+    void sendMultiCastAdvertisement();
     void add_handlers();
 
 
