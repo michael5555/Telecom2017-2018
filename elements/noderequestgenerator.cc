@@ -78,7 +78,9 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     mipr->home_address = MNBase->getMyAddress();
     mipr->home_agent = MNBase->getHomeAgentPublic();
     mipr->care_of_address = MNBase->getCareOfAddress();
-    mipr->id = htonq(0);
+    time_t currenttime;
+    uint64_t id = time(&currenttime);
+    mipr->id = htonq(id);
 
     _sequence++; 
     

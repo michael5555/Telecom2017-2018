@@ -91,7 +91,11 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->lifetime = htons(30);
     mipr->home_address = nodeinfo.home_address;
     mipr->home_agent = MABase->getMyPublicAddress();
-    mipr->id = htonq(0);
+
+    time_t currenttime;
+    uint64_t id = time(&currenttime);
+
+    mipr->id = htonq(id);
 
     _sequence++; 
     
