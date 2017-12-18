@@ -18,8 +18,6 @@ elementclass MobileNode {
 	MNState :: MNInfoBase(MYADDRESS $address, HAPUBLIC $home_agent, HAPRIVATE $gateway);
 	requestsource :: NodeRequestGenerator(MNBASE MNState);
 
-	advertethernethandler :: MNAdvertisementEthernetHandler(MNBASE MNState);
-	ethsetter :: MNEchoReplyEthernetSetter(MNBASE MNState)
 
 	adverthandler :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource,RT rt);
 	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource,RT rt);
@@ -42,7 +40,6 @@ elementclass MobileNode {
 		-> ttl :: DecIPTTL
 		-> frag :: IPFragmenter(1500)
 		-> arpq :: ARPQuerier($address)
-		-> ethsetter
 		-> output;
 
 	ipgw[1]	-> ICMPError($address, parameterproblem)
@@ -65,7 +62,6 @@ elementclass MobileNode {
 		-> [1]arpq;
 
 	in_cl[2]
-		-> advertethernethandler
 		-> ip;
 
 	rt[2]
