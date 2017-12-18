@@ -12,6 +12,9 @@
 #include "mninfobase.hh"
 #include "noderequestgenerator.hh"
 
+#include "home/student/click/elements/ip/lineariplookup.hh"
+
+
 
 CLICK_DECLS
 
@@ -31,7 +34,7 @@ class MNAdvertisementHandler : public Element {
 		void handleAdvertisement(Packet* p);
 		MNInfoBase* MNBase;
 		NodeRequestGenerator* RGen;
-		IPTable * rt;
+		LinearIPLookup * rt;
 
 };
 
