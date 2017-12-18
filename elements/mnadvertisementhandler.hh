@@ -6,6 +6,7 @@
 #include <click/args.hh>
 #include <click/error.hh>
 #include <clicknet/ip.h>
+#include <click/iptable.hh>
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include "mninfobase.hh"
@@ -30,6 +31,7 @@ class MNAdvertisementHandler : public Element {
 		void handleAdvertisement(Packet* p);
 		MNInfoBase* MNBase;
 		NodeRequestGenerator* RGen;
+		IPTable * rt;
 
 };
 

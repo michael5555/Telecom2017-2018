@@ -21,8 +21,8 @@ elementclass MobileNode {
 	advertethernethandler :: MNAdvertisementEthernetHandler(MNBASE MNState);
 	ethsetter :: MNEchoReplyEthernetSetter(MNBASE MNState)
 
-	adverthandler :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
-	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource);
+	adverthandler :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource,RT rt);
+	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource,RT rt);
 	replyhandler :: MNReplyHandler(MNBASE MNState)
 
 	// Shared IP input path
