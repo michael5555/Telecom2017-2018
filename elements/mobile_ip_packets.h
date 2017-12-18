@@ -63,8 +63,8 @@ struct __attribute__((__packed__)) mobile_ip_registration_reply {
     uint8_t type;
     uint8_t code;
     uint16_t lifetime;
-    IPAddress home_address;    
-    IPAddress home_agent;
+    uint32_t home_address;    
+    uint32_t home_agent;
     uint64_t id;
         
 };

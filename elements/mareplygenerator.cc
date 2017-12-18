@@ -89,10 +89,10 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->type = 3;
     mipr->code = 0;
     mipr->lifetime = htons(30);
-    mipr->home_address = nodeinfo.home_address;
-    mipr->home_agent = MABase->getMyPublicAddress();
+    mipr->home_address = nodeinfo.home_address.addr();
+    mipr->home_agent = MABase->getMyPublicAddress().addr();
 
-    time_t currenttime;
+    time_t currenttime = time(0);
     uint64_t id = time(&currenttime);
 
     mipr->id = htonq(id);
