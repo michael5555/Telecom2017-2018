@@ -10,11 +10,16 @@
 #include <clicknet/ether.h>
 #include <click/timer.hh>
 #include <clicknet/icmp.h>
-#include <time.h>
+#include <ctime>
+#include <chrono>
+
 #include <stdlib.h>
 #include <iostream>
 
 CLICK_DECLS
+
+typedef std::chrono::system_clock Clock;
+
 
 MAReplyGenerator::MAReplyGenerator() : MABase(0), _sequence(0) {}
 MAReplyGenerator::~MAReplyGenerator() {}
@@ -92,8 +97,12 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->home_address = nodeinfo.home_address.addr();
     mipr->home_agent = MABase->getMyPublicAddress().addr();
 
-    time_t currenttime = time(0);
-    uint64_t id = time(&currenttime);
+    /*time_t currenttime = time(0);
+    uint64_t id = time(&currenttime);*/
+
+    auto now = Clock::now();
+    std::time_t now_c = Clock::to_time_t(now);
+    uint64_t id = now_c;
 
     mipr->id = htonq(id);
 

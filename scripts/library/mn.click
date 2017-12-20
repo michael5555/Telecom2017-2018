@@ -18,7 +18,6 @@ elementclass MobileNode {
 	MNState :: MNInfoBase(MYADDRESS $address, HAPUBLIC $home_agent, HAPRIVATE $gateway);
 	requestsource :: NodeRequestGenerator(MNBASE MNState);
 
-
 	adverthandler :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource,RT rt);
 	adverthandler2 :: MNAdvertisementHandler(MNBASE MNState, RGEN requestsource,RT rt);
 	replyhandler :: MNReplyHandler(MNBASE MNState)
