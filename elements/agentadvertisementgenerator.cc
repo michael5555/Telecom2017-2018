@@ -14,13 +14,15 @@
 
 CLICK_DECLS
 
-AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0) {}
+AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(14) {}
 AgentAdvertisementGenerator::~AgentAdvertisementGenerator() {}
 
 int AgentAdvertisementGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
     if (cp_va_kparse(conf, this, errh, "MABASE", cpkM+cpkP, cpElementCast,"MAInfoBase", &MABase, cpEnd) < 0) return -1;
     
     if (MABase == 0) return errh->error("Wrong  argument, should be a MAInfoBase element.");
+    timer.initialize(this);
+    timer.schedule_after_msec(0);
     return 0;
 }
 
@@ -38,6 +40,12 @@ void AgentAdvertisementGenerator::sendMultiCastAdvertisement(){
  	    output(0).push(q);
         click_chatter("Mobile Agent -- sent agent advertisement with unicast destination %s\n",MABase->getMyPublicAddress().unparse().c_str());
     }
+}
+void AgentAdvertisementGenerator::run_timer(Timer* t){
+
+    this->sendMultiCastAdvertisement();
+    double r = ((double) rand() / (RAND_MAX));
+    timer.schedule_after_msec((interval * 1000) + r);
 }
   
 void AgentAdvertisementGenerator::add_handlers() {

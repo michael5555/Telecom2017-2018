@@ -5,6 +5,7 @@
 #include <click/ipaddress.hh>
 #include <click/vector.hh>
 #include <click/hashtable.hh>
+#include <click/timer.hh>
 #include "mninfobase.hh"
 #include "mobile_ip_packets.h"
 
@@ -20,8 +21,10 @@ public:
     const char* processing() const { return PUSH; }
     int configure(Vector<String>&, ErrorHandler*);
 
-    static int sendSollicitation(const String& conf, Element* e, void* thunk, ErrorHandler* errh);
+    static int sendSollicitationHandler(const String& conf, Element* e, void* thunk, ErrorHandler* errh);
+    int sendSollicitation();
     void add_handlers();
+    void run_timer(Timer*);
 
 
 private:
@@ -30,6 +33,9 @@ private:
     MNInfoBase* MNBase;
 
     uint32_t _sequence;
+    Timer timer;
+
+    int interval;
     
 };
 

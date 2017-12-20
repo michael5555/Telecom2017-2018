@@ -14,17 +14,20 @@
 
 CLICK_DECLS
 
-NodeSollicitationGenerator::NodeSollicitationGenerator() : MNBase(0), _sequence(0) {}
+NodeSollicitationGenerator::NodeSollicitationGenerator() : MNBase(0), _sequence(0), interval(14) {}
 NodeSollicitationGenerator::~NodeSollicitationGenerator() {}
 
 int NodeSollicitationGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
     if (cp_va_kparse(conf, this, errh, "MNBASE", cpkM+cpkP, cpElementCast,"MNInfoBase", &MNBase, cpEnd) < 0) return -1;
     
     if (MNBase == 0) return errh->error("Wrong  argument, should be a MNInfoBase element.");
+
+    timer.initialize(this);
+    timer.schedule_after_msec(0);
     return 0;
 }
 
-int NodeSollicitationGenerator::sendSollicitation(const String& conf, Element* e, void* thunk, ErrorHandler* errh){
+int NodeSollicitationGenerator::sendSollicitationHandler(const String& conf, Element* e, void* thunk, ErrorHandler* errh){
     NodeSollicitationGenerator* nsg =  (NodeSollicitationGenerator*) e;
     if (Packet *q = nsg->make_packet()) {
  	    nsg->output(0).push(q);
@@ -32,9 +35,25 @@ int NodeSollicitationGenerator::sendSollicitation(const String& conf, Element* e
     }
     return 0;
 }
+
+int NodeSollicitationGenerator::sendSollicitation(){
+    if (Packet *q = make_packet()) {
+ 	    output(0).push(q);
+        click_chatter("Mobile Node -- sent router sollicitation with broadcast destination.\n");
+    }
+    return 0;
+}
+
   
 void NodeSollicitationGenerator::add_handlers() {
-    add_write_handler("sendSollicitation", &sendSollicitation, (void*)0);
+    add_write_handler("sendSollicitation", &sendSollicitationHandler, (void*)0);
+}
+
+void NodeSollicitationGenerator::run_timer(Timer* t){
+
+    this->sendSollicitation();
+    double r = ((double) rand() / (RAND_MAX));
+    timer.schedule_after_msec((interval * 1000) + r);
 }
 
 Packet* NodeSollicitationGenerator::make_packet() {

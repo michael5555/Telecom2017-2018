@@ -28,6 +28,7 @@ public:
     static int sendAgentAdvertisement(const String& conf, Element* e, void* thunk, ErrorHandler* errh);
     void sendMultiCastAdvertisement();
     void add_handlers();
+    void run_timer(Timer*);
 
 
 private:
@@ -36,6 +37,8 @@ private:
     MAInfoBase* MABase;
 
     uint32_t _sequence;
+    Timer timer;
+    int interval;
     
 };
 

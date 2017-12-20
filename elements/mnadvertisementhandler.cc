@@ -71,11 +71,9 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
         MNBase->setHomeStatus(true);
         click_chatter("Mobile Node -- I am home.\n");
 
-        click_chatter("%s\n",rt->dump_routes().c_str());
         IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
         ErrorHandler* errh = new ErrorHandler();
         rt->add_route(newgw,true,0,errh);
-        click_chatter("%s\n",rt->dump_routes().c_str());
 
         RGen->sendRequest(MNBase->getHomeAgentPrivate());
     }
@@ -84,11 +82,9 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
         MNBase->setHomeStatus(false);
         click_chatter("Mobile Node --  I am away.\n");
 
-        click_chatter("%s\n",rt->dump_routes().c_str());
         IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
         ErrorHandler* errh = new ErrorHandler();
         rt->add_route(newgw,true,0,errh);
-        click_chatter("%s\n",rt->dump_routes().c_str());
 
         RGen->sendRequest(iph->ip_src);
     }
