@@ -31,12 +31,16 @@ class MNAdvertisementHandler : public Element {
 		int configure(Vector<String>&, ErrorHandler*);
 
         void push(int, Packet*);
+   		void run_timer(Timer*);
+
 		
 	private:
 		void handleAdvertisement(Packet* p);
+		void resetAfteradvertisementExpiry(Packet*);
 		MNInfoBase* MNBase;
 		NodeRequestGenerator* RGen;
 		LinearIPLookup * rt;
+		Timer timer;
 
 };
 

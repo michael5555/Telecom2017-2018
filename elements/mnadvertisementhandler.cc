@@ -29,7 +29,8 @@ int MNAdvertisementHandler::configure(Vector<String>& conf, ErrorHandler* errh) 
     if (RGen == 0) return errh->error("Wrong argument, should be an NodeRequestGenerator element.");
     if (rt == 0) return errh->error("Wrong argument, should be an LinearIPLookup element.");
 
-    
+    timer.initialize(this);
+
     return 0;
 }
 
@@ -68,27 +69,72 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
 
     if(MNBase->getCurrentRouter() == MNBase->getHomeAgentPublic() || MNBase->getCurrentRouter() == MNBase->getHomeAgentPrivate())
     {
-        MNBase->setHomeStatus(true);
-        click_chatter("Mobile Node -- I am home.\n");
-
-        IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
-        ErrorHandler* errh = new ErrorHandler();
-        rt->add_route(newgw,true,0,errh);
-
-        RGen->sendRequest(MNBase->getHomeAgentPrivate());
+        this->discoverHome(p);
+        timer.schedule_after_msec(45 * 1000);
     }
     else {
 
-        MNBase->setHomeStatus(false);
-        click_chatter("Mobile Node --  I am away.\n");
+        this->discoverAway(p);
+        timer.schedule_after_msec(45 * 1000);
 
-        IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
-        ErrorHandler* errh = new ErrorHandler();
-        rt->add_route(newgw,true,0,errh);
-
-        RGen->sendRequest(iph->ip_src);
     }
     
+}
+
+void MNAdvertisementHandler::resetAfteradvertisementExpiry(Packet* p) {
+    click_ip *iph = (click_ip *)p->data();
+
+
+    MNBase->setHomeStatus(true);
+    click_chatter("Mobile Node -- Advertisement Expired.\n");
+
+    IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
+    ErrorHandler* errh = new ErrorHandler();
+    rt->add_route(newgw,true,0,errh);
+
+
+}
+
+void MNAdvertisementHandler::discoverHome(Packet* p) {
+    click_ip *iph = (click_ip *)p->data();
+    bool previousHomeStatus = MNBase->getHomeStatus();
+
+    MNBase->setHomeStatus(true);
+    click_chatter("Mobile Node -- I am home.\n");
+
+    IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
+    ErrorHandler* errh = new ErrorHandler();
+    rt->add_route(newgw,true,0,errh);
+
+    if(!previousHomeStatus) {
+        RGen->sendRequest(MNBase->getHomeAgentPrivate());
+    }
+
+
+}
+
+void MNAdvertisementHandler::discoverAway(Packet* p) {
+    click_ip *iph = (click_ip *)p->data();
+    bool previousHomeStatus = MNBase->getHomeStatus();
+
+
+    MNBase->setHomeStatus(false);
+    click_chatter("Mobile Node --  I am away.\n");
+
+    IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
+    ErrorHandler* errh = new ErrorHandler();
+    rt->add_route(newgw,true,0,errh);
+
+    if(previousHomeStatus) {
+        RGen->sendRequest(iph->ip_src);
+    }
+
+
+}
+
+void NodeSollicitationGenerator::run_timer(Timer* t){
+
+    this->resetAfteradvertisementExpiry();
 }
 
 
