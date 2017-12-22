@@ -32,6 +32,10 @@ class MNAdvertisementHandler : public Element {
 
         void push(int, Packet*);
    		void run_timer(Timer*);
+		void discoverHome(Packet*);
+		void discoverAway(Packet*);
+
+
 
 		
 	private:

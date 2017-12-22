@@ -134,7 +134,7 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
 
 }
 
-void NodeSollicitationGenerator::run_timer(Timer* t){
+void MNAdvertisementHandler::run_timer(Timer* t){
 
     this->resetAfteradvertisementExpiry();
 }
