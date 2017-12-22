@@ -23,11 +23,14 @@ int NodeRequestGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
     if (cp_va_kparse(conf, this, errh, "MNBASE", cpkM+cpkP, cpElementCast,"MNInfoBase", &MNBase, cpEnd) < 0) return -1;
     
     if (MNBase == 0) return errh->error("Wrong  argument, should be a MNInfoBase element.");
+
+    timer.initialize(this);
+    requestdst = MNBase->getHomeAgentPrivate();
     return 0;
 }
 
-int NodeRequestGenerator::sendRequest(IPAddress dst){
-    if (Packet *q = make_packet(dst)) {
+int NodeRequestGenerator::sendRequest(){
+    if (Packet *q = make_packet(requestdst)) {
 
  	    output(0).push(q);
         click_chatter("Mobile Node -- sent Mobile IP Registration Request\n");
@@ -85,10 +88,23 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     _sequence++; 
     
     q->set_dst_ip_anno(destination);
+
+    timer.schedule_after_msec(60 * 1000);
     
     return q;
    
 }
+
+void NodeRequestGenerator::setRequestDestination(IPAddress dst){
+
+    requestdst = dst;
+}
+
+void NodeRequestGenerator::run_timer(Timer* t) {
+
+    this->sendRequest();
+}
+
 
 CLICK_ENDDECLS
 EXPORT_ELEMENT(NodeRequestGenerator)

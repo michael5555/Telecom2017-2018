@@ -107,7 +107,8 @@ void MNAdvertisementHandler::discoverHome(Packet* p) {
     rt->add_route(newgw,true,0,errh);
 
     if(!previousHomeStatus) {
-        RGen->sendRequest(MNBase->getHomeAgentPrivate());
+        Rgen->setRequestDestination(MNBase->getHomeAgentPrivate());
+        RGen->sendRequest();
     }
 
 
@@ -126,7 +127,8 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
     rt->add_route(newgw,true,0,errh);
 
     if(previousHomeStatus) {
-        RGen->sendRequest(iph->ip_src);
+        Rgen->setRequestDestination(iph->ip_src);
+        RGen->sendRequest();
     }
 
 
