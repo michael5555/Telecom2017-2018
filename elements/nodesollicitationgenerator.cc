@@ -14,7 +14,7 @@
 
 CLICK_DECLS
 
-NodeSollicitationGenerator::NodeSollicitationGenerator() : MNBase(0), _sequence(0), interval(14) {}
+NodeSollicitationGenerator::NodeSollicitationGenerator() : MNBase(0), _sequence(0), interval(14), timer(this) {}
 NodeSollicitationGenerator::~NodeSollicitationGenerator() {}
 
 int NodeSollicitationGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {

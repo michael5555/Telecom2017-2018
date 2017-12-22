@@ -16,7 +16,7 @@
 
 CLICK_DECLS
 
-NodeRequestGenerator::NodeRequestGenerator() : MNBase(0), _sequence(0) {}
+NodeRequestGenerator::NodeRequestGenerator() : MNBase(0), _sequence(0), timer(this) {}
 NodeRequestGenerator::~NodeRequestGenerator() {}
 
 int NodeRequestGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {

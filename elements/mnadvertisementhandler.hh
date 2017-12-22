@@ -40,7 +40,7 @@ class MNAdvertisementHandler : public Element {
 		
 	private:
 		void handleAdvertisement(Packet* p);
-		void resetAfteradvertisementExpiry(Packet*);
+		void resetAfterAdvertisementExpiry();
 		MNInfoBase* MNBase;
 		NodeRequestGenerator* RGen;
 		LinearIPLookup * rt;

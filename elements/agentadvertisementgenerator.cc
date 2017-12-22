@@ -14,7 +14,7 @@
 
 CLICK_DECLS
 
-AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(14) {}
+AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(14), timer(this) {}
 AgentAdvertisementGenerator::~AgentAdvertisementGenerator() {}
 
 int AgentAdvertisementGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {

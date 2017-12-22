@@ -16,7 +16,7 @@
 
 CLICK_DECLS
 
-MNAdvertisementHandler::MNAdvertisementHandler() : MNBase(0) {}
+MNAdvertisementHandler::MNAdvertisementHandler() : MNBase(0), timer(this) {}
 
 MNAdvertisementHandler::~MNAdvertisementHandler() {}
 
