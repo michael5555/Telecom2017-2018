@@ -81,14 +81,11 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
     
 }
 
-void MNAdvertisementHandler::resetAfteradvertisementExpiry(Packet* p) {
-    click_ip *iph = (click_ip *)p->data();
-
-
+void MNAdvertisementHandler::resetAfterAdvertisementExpiry() {
     MNBase->setHomeStatus(true);
     click_chatter("Mobile Node -- Advertisement Expired.\n");
 
-    IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
+    IPRoute newgw = IPRoute(0,0,MNBase->getHomeAgentPrivate(),1);
     ErrorHandler* errh = new ErrorHandler();
     rt->add_route(newgw,true,0,errh);
 
@@ -107,7 +104,7 @@ void MNAdvertisementHandler::discoverHome(Packet* p) {
     rt->add_route(newgw,true,0,errh);
 
     if(!previousHomeStatus) {
-        Rgen->setRequestDestination(MNBase->getHomeAgentPrivate());
+        RGen->setRequestDestination(MNBase->getHomeAgentPrivate());
         RGen->sendRequest();
     }
 
@@ -127,7 +124,7 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
     rt->add_route(newgw,true,0,errh);
 
     if(previousHomeStatus) {
-        Rgen->setRequestDestination(iph->ip_src);
+        RGen->setRequestDestination(iph->ip_src);
         RGen->sendRequest();
     }
 
@@ -136,7 +133,7 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
 
 void MNAdvertisementHandler::run_timer(Timer* t){
 
-    this->resetAfteradvertisementExpiry();
+    this->resetAfterAdvertisementExpiry();
 }
 
 
