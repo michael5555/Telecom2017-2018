@@ -16,7 +16,7 @@
 
 CLICK_DECLS
 
-MNAdvertisementHandler::MNAdvertisementHandler() : MNBase(0), timer(this) {}
+MNAdvertisementHandler::MNAdvertisementHandler() : MNBase(0), expiryTime(45), timer(this) {}
 
 MNAdvertisementHandler::~MNAdvertisementHandler() {}
 
@@ -70,12 +70,12 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
     if(MNBase->getCurrentRouter() == MNBase->getHomeAgentPublic() || MNBase->getCurrentRouter() == MNBase->getHomeAgentPrivate())
     {
         this->discoverHome(p);
-        timer.schedule_after_msec(45 * 1000);
+        timer.schedule_after_msec(expiryTime * 1000);
     }
     else {
 
         this->discoverAway(p);
-        timer.schedule_after_msec(45 * 1000);
+        timer.schedule_after_msec(expiryTime * 1000);
 
     }
     
@@ -134,6 +134,11 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
 void MNAdvertisementHandler::run_timer(Timer* t){
 
     this->resetAfterAdvertisementExpiry();
+}
+
+void MNAdvertisementHandler::setExpiryTime(unsigned int i) {
+
+    expiryTime = i;
 }
 
 

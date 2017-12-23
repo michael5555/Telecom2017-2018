@@ -14,7 +14,7 @@
 
 CLICK_DECLS
 
-AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(14), timer(this) {}
+AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(15), timer(this) {}
 AgentAdvertisementGenerator::~AgentAdvertisementGenerator() {}
 
 int AgentAdvertisementGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
@@ -45,11 +45,16 @@ void AgentAdvertisementGenerator::run_timer(Timer* t){
 
     this->sendMultiCastAdvertisement();
     double r = ((double) rand() / (RAND_MAX));
-    timer.schedule_after_msec((interval * 1000) + r);
+    timer.schedule_after_msec((interval * 1000) - r);
 }
   
 void AgentAdvertisementGenerator::add_handlers() {
     add_write_handler("sendAdvertisement", &sendAgentAdvertisement, (void*)0);
+}
+
+void AgentAdvertisementGenerator::setInterval(unsigned int i) {
+
+    interval = i;
 }
 
 Packet* AgentAdvertisementGenerator::make_packet(IPAddress _dst) {

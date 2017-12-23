@@ -14,7 +14,7 @@
 
 CLICK_DECLS
 
-NodeSollicitationGenerator::NodeSollicitationGenerator() : MNBase(0), _sequence(0), interval(14), timer(this) {}
+NodeSollicitationGenerator::NodeSollicitationGenerator() : MNBase(0), _sequence(0), interval(5), timer(this) {}
 NodeSollicitationGenerator::~NodeSollicitationGenerator() {}
 
 int NodeSollicitationGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
@@ -23,7 +23,7 @@ int NodeSollicitationGenerator::configure(Vector<String>& conf, ErrorHandler* er
     if (MNBase == 0) return errh->error("Wrong  argument, should be a MNInfoBase element.");
 
     timer.initialize(this);
-    timer.schedule_after_msec(0);
+    timer.schedule_after_msec(5);
     return 0;
 }
 
@@ -49,11 +49,16 @@ void NodeSollicitationGenerator::add_handlers() {
     add_write_handler("sendSollicitation", &sendSollicitationHandler, (void*)0);
 }
 
+void NodeSollicitationGenerator::setInterval(unsigned int i) {
+
+    interval = i;
+}
+
 void NodeSollicitationGenerator::run_timer(Timer* t){
 
     this->sendSollicitation();
     double r = ((double) rand() / (RAND_MAX));
-    timer.schedule_after_msec((interval * 1000) + r);
+    timer.schedule_after_msec((interval * 1000) - r);
 }
 
 Packet* NodeSollicitationGenerator::make_packet() {

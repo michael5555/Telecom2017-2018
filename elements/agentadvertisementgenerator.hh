@@ -29,6 +29,7 @@ public:
     void sendMultiCastAdvertisement();
     void add_handlers();
     void run_timer(Timer*);
+    void setInterval(unsigned int);
 
 
 private:
@@ -38,7 +39,7 @@ private:
 
     uint32_t _sequence;
     Timer timer;
-    int interval;
+    unsigned int interval;
     
 };
 

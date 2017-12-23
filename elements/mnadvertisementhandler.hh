@@ -34,6 +34,7 @@ class MNAdvertisementHandler : public Element {
    		void run_timer(Timer*);
 		void discoverHome(Packet*);
 		void discoverAway(Packet*);
+		void setExpiryTime(unsigned int);
 
 
 
@@ -44,6 +45,8 @@ class MNAdvertisementHandler : public Element {
 		MNInfoBase* MNBase;
 		NodeRequestGenerator* RGen;
 		LinearIPLookup * rt;
+
+		unsigned int expiryTime
 		Timer timer;
 
 };
