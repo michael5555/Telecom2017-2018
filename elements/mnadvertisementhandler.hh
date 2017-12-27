@@ -46,7 +46,7 @@ class MNAdvertisementHandler : public Element {
 		NodeRequestGenerator* RGen;
 		LinearIPLookup * rt;
 
-		unsigned int expiryTime
+		unsigned int expiryTime;
 		Timer timer;
 
 };

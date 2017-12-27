@@ -54,7 +54,8 @@ struct mobile_ip_registration_request {
     IPAddress home_address;    
     IPAddress home_agent;
     IPAddress care_of_address;
-    uint64_t id;
+    uint32_t id1;
+    uint32_t id2;
     
 };
 
@@ -65,7 +66,9 @@ struct __attribute__((__packed__)) mobile_ip_registration_reply {
     uint16_t lifetime;
     uint32_t home_address;    
     uint32_t home_agent;
-    uint64_t id;
+    uint32_t id1;
+    uint32_t id2;
+
         
 };
 

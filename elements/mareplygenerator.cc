@@ -98,8 +98,11 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->home_agent = MABase->getMyPublicAddress().addr();
 
 
-    uint64_t id = rand();
-    mipr->id = htonq(id);
+    uint32_t id1 = rand();
+    uint32_t id2 = rand();
+
+    mipr->id1 = htonl(id1);
+    mipr->id2 = htonl(id2);
 
     _sequence++; 
     
