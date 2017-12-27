@@ -97,13 +97,8 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->home_address = nodeinfo.home_address.addr();
     mipr->home_agent = MABase->getMyPublicAddress().addr();
 
-    /*time_t currenttime = time(0);
-    uint64_t id = time(&currenttime);*/
 
-    auto now = Clock::now();
-    std::time_t now_c = Clock::to_time_t(now);
-    uint64_t id = now_c;
-
+    uint64_t id = rand();
     mipr->id = htonq(id);
 
     _sequence++; 
