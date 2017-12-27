@@ -31,7 +31,7 @@ int MAReplyGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
     return 0;
 }
 
-int MAReplyGenerator::sendReply(){
+int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2){
 
     if (Packet *q = make_packet()) {
         click_ip *iph = (click_ip *)q->data();
@@ -44,7 +44,7 @@ int MAReplyGenerator::sendReply(){
     return 0;
 }
 
-Packet* MAReplyGenerator::make_packet() {
+Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2) {
 
     int headroom = sizeof(click_ether);
     
@@ -98,8 +98,7 @@ Packet* MAReplyGenerator::make_packet() {
     mipr->home_agent = MABase->getMyPublicAddress().addr();
 
 
-    uint32_t id1 = rand();
-    uint32_t id2 = rand();
+
 
     mipr->id1 = htonl(id1);
     mipr->id2 = htonl(id2);

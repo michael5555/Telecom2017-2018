@@ -58,7 +58,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
             else {
                 MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
             }
-            ReplyGen->sendReply();
+            ReplyGen->sendReply(mipr->id1,mipr->id2);
 
         }
     }

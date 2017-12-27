@@ -20,11 +20,11 @@ public:
     const char* processing() const { return PUSH; }
     int configure(Vector<String>&, ErrorHandler*);
 
-    int sendReply();
+    int sendReply(uint32_t,uint32_t);
 
 private:
 
-    Packet* make_packet();
+    Packet* make_packet(uint32_t,uint32_t);
     MAInfoBase* MABase;
 
     uint32_t _sequence;
