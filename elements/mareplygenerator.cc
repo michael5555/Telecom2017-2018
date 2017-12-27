@@ -100,8 +100,8 @@ Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2) {
 
 
 
-    mipr->id1 = htonl(id1);
-    mipr->id2 = htonl(id2);
+    mipr->id1 = id1;
+    mipr->id2 = id2;
 
     _sequence++; 
     
