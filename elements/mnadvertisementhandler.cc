@@ -67,6 +67,8 @@ void MNAdvertisementHandler::handleAdvertisement(Packet* p) {
         MNBase->setCareOfAddress(*coa);
     }
 
+    expiryTime = icmph->lifetime;
+
     if(MNBase->getCurrentRouter() == MNBase->getHomeAgentPublic() || MNBase->getCurrentRouter() == MNBase->getHomeAgentPrivate())
     {
         this->discoverHome(p);

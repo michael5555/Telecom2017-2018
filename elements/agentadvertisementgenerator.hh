@@ -30,6 +30,11 @@ public:
     void add_handlers();
     void run_timer(Timer*);
     void setInterval(unsigned int);
+    void setLifetime(unsigned int);
+
+
+    static int setRouterLifetime(const String& conf, Element* e, void* thunk, ErrorHandler* errh);
+
 
 
 private:
@@ -40,6 +45,8 @@ private:
     uint32_t _sequence;
     Timer timer;
     unsigned int interval;
+    unsigned int router_lifetime;
+
     
 };
 

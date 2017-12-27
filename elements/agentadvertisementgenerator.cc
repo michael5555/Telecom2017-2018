@@ -14,7 +14,7 @@
 
 CLICK_DECLS
 
-AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(15), timer(this) {}
+AgentAdvertisementGenerator::AgentAdvertisementGenerator() : MABase(0), _sequence(0), interval(15),router_lifetime(45), timer(this) {}
 AgentAdvertisementGenerator::~AgentAdvertisementGenerator() {}
 
 int AgentAdvertisementGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
@@ -91,7 +91,7 @@ Packet* AgentAdvertisementGenerator::make_packet(IPAddress _dst) {
     icmph->checksum = 0;
     icmph->num_addrs = 1;
     icmph->addr_entry_size = 2;
-    icmph->lifetime = htons(45);
+    icmph->lifetime = htons(router_lifetime);
 
     router_address_preference_level *rapl = (router_address_preference_level*)(icmph + 1);
 
@@ -112,12 +112,29 @@ Packet* AgentAdvertisementGenerator::make_packet(IPAddress _dst) {
     icmph->checksum = click_in_cksum((const unsigned char *)icmph, sizeof(icmp_router_advertisement)
     + sizeof(router_address_preference_level) + sizeof(agent_advertisement_extension) + sizeof(IPAddress));
 
-    _sequence++; 
+    _sequence++;
+    if(_sequence >= 0xffff) {
+
+        _sequence = 256;
+    } 
     
     q->set_dst_ip_anno(_dst);
     
     return q;
    
+}
+void AgentAdvertisementGenerator::setLifetime(unsigned int i) {
+
+    router_lifetime = i;
+}
+int AgentAdvertisementGenerator::setRouterLifetime(const String& conf, Element* e, void* thunk, ErrorHandler* errh){
+    AgentAdvertisementGenerator* aag =  (AgentAdvertisementGenerator*) e;
+    unsigned int new_lifetime;
+	if (cp_va_kparse(conf, aag, errh, "LT", cpkM, cpInteger, &new_lifetime, cpEnd) < 0)
+		return -1;
+    
+    aag->setLifetime(new_lifetime);
+    return 0;
 }
 
 
