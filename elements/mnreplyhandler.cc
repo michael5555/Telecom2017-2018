@@ -45,6 +45,9 @@ void MNReplyHandler::handleReply(Packet* p) {
             if(MNBase->getHomeStatus()){
                 MNBase->setCareOfAddress(MNBase->getHomeAgentPublic());
             }
+            else if (!MNBase->getHomeStatus() && mipr->code != 0) {
+                MNBase->setCareOfAddress(MNBase->getHomeAgentPublic());
+            }
             return;
         }
         return;

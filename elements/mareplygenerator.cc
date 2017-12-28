@@ -111,5 +111,63 @@ Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2) {
    
 }
 
+int MAReplyGenerator::denyReply(uint32_t id1,uint32_t id2,uint8_t code, IPAddress src, IPAddress dst) {
+
+int headroom = sizeof(click_ether);
+    
+    WritablePacket *q = Packet::make(headroom, 0, sizeof(click_ip) 
+    + sizeof(click_udp) + sizeof(mobile_ip_registration_reply), 0);
+
+    if (!q)
+        return 0;
+    memset(q->data(), '\0',+ sizeof(click_ip) 
+    + sizeof(click_udp) + sizeof(mobile_ip_registration_reply));
+
+    localnodeinfo nodeinfo = MABase->getLocalNode();
+
+    click_ip *iph = (click_ip *)q->data();
+    
+    iph->ip_v = 4;
+    iph->ip_hl = sizeof(click_ip) >> 2;
+    iph->ip_len = htons(q->length());
+    uint16_t ip_id = ((_sequence) % 0xFFFF) ; // ensure ip_id != 0
+    iph->ip_id = htons(ip_id);
+    iph->ip_p = IP_PROTO_UDP; 
+    iph->ip_ttl = 64;
+    iph->ip_src = src;
+    iph->ip_dst = dst;
+    iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
+    
+    click_udp *udph = (click_udp *)(iph + 1);
+    
+    udph->uh_sport = htons(434);
+    udph->uh_dport = htons(56026);
+    uint16_t len = q->length() - sizeof(click_ip);
+    udph->uh_ulen = htons(len);
+    udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));
+
+    mobile_ip_registration_reply *mipr = (mobile_ip_registration_reply*)(udph + 1);
+
+    mipr->type = 3;
+    mipr->code = code;
+    mipr->lifetime = htons(30);
+    mipr->home_address = nodeinfo.home_address.addr();
+    mipr->home_agent = MABase->getMyPublicAddress().addr();
+
+
+
+
+    mipr->id1 = id1;
+    mipr->id2 = id2;
+
+    _sequence++; 
+    
+    q->set_dst_ip_anno(dst);
+
+    return q;
+
+
+}
+
 CLICK_ENDDECLS
 EXPORT_ELEMENT(MAReplyGenerator)

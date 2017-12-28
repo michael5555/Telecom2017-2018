@@ -26,7 +26,9 @@ class MARegistrationHandler : public Element {
 		int configure(Vector<String>&, ErrorHandler*);
 
         void push(int, Packet*);
-		
+		int checkRegConditionsForeign(Packet*);
+		int checkRegConditionsHome(Packet*);
+
 	private:
 		void handleRegistration(Packet* p);
 		void relayRequest(mobile_ip_registration_request*, click_ip*, Packet*);

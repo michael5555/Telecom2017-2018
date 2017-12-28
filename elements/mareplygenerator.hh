@@ -21,6 +21,8 @@ public:
     int configure(Vector<String>&, ErrorHandler*);
 
     int sendReply(uint32_t,uint32_t);
+    int denyReply(uint32_t,uint32_t,uint8_t,IPAddress,IPAddress);
+
 
 private:
 

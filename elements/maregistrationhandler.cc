@@ -13,6 +13,13 @@
 #include "mobile_ip_packets.h"
 #include <iostream>
 #include <math.h>
+#include <bitset>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>       
+#include <iostream>     
+#include <sstream>      
+
 
 CLICK_DECLS
 
@@ -48,17 +55,35 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
     if (mipr->type == REGISTRATION_REQUEST){
         click_chatter("Mobile Agent -- Recieved Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
-            this->relayRequest(mipr,iph,q);
+            int code = checkRegConditionsForeign(q);
+            if(code == 0){
+                this->relayRequest(mipr,iph,q);
+            }
+            else {
+                ReplyGen->denyReply(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
+                click_chatter("Mobile Agent -- Denied Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
+
+            }
         }
         if(mipr->home_agent == MABase->getMyPublicAddress() || mipr->home_agent == MABase->getMyPrivateAddress()) {
 
-            if( iph->ip_src == mipr->home_address) {
-                MABase->setLocalNode(mipr->home_address,mipr->home_agent,mipr->lifetime);
+            int code = checkRegConditionsHome(q);
+            if(code == 0){
+
+
+                if( iph->ip_src == mipr->home_address) {
+                    MABase->setLocalNode(mipr->home_address,mipr->home_agent,mipr->lifetime);
+                }
+                else {
+                    MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+                }
+                ReplyGen->sendReply(mipr->id1,mipr->id2);
             }
             else {
-                MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
+                ReplyGen->denyReply(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
+                click_chatter("Mobile Agent -- Denied Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
+
             }
-            ReplyGen->sendReply(mipr->id1,mipr->id2);
 
         }
     }
@@ -86,6 +111,62 @@ void MARegistrationHandler::relayReply(mobile_ip_registration_reply* mipreply,cl
     click_chatter("Mobile Agent -- relayed Registration Reply.\n",MABase->getMyPublicAddress().unparse().c_str());
 
 }
+
+int MARegistrationHandler::checkRegConditionsForeign(Packet* p) {
+
+    click_ip *iph = (click_ip *)p->data();
+    click_udp* udph = (click_udp *)(iph + 1);
+    mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
+
+    if (mipr->lifetime > 60) {
+
+        return 69;
+    }
+
+    int flags = mipr->flags;
+    std::stringstream ss;
+    ss << flags;
+    std::string str = ss.str();
+
+    std::bitset<8> bs(str);
+
+    if(bs.test(2)){
+
+        return 72;
+    }
+    if(bs.test(3)){
+
+        return 72;
+    }
+    if(bs.test(4)){
+
+        return 72;
+    }
+
+    return 0;
+}
+
+int MARegistrationHandler::checkRegConditionsHome(Packet* p) {
+
+    click_ip *iph = (click_ip *)p->data();
+    click_udp* udph = (click_udp *)(iph + 1);
+    mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
+
+    int flags = mipr->flags;
+    std::stringstream ss;
+    ss << flags;
+    std::string str = ss.str();
+
+    std::bitset<8> bs(str);
+
+    if(bs.test(0)){
+
+        return 136;
+    }
+
+    return 0;
+}
+
 
 CLICK_ENDDECLS
 
