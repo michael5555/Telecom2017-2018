@@ -33,7 +33,6 @@ int NodeRequestGenerator::sendRequest(){
     if (Packet *q = make_packet(requestdst)) {
 
  	    output(0).push(q);
-        click_chatter("Mobile Node -- sent Mobile IP Registration Request\n");
     }
     return 0;
 }

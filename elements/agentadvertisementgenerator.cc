@@ -30,7 +30,6 @@ int AgentAdvertisementGenerator::sendAgentAdvertisement(const String& conf, Elem
     AgentAdvertisementGenerator* aag =  (AgentAdvertisementGenerator*) e;
     if (Packet *q = aag->make_packet(IPAddress("255.255.255.255"))) {
  	    aag->output(0).push(q);
-        click_chatter("Mobile Agent -- sent agent advertisement with broadcast destination\n");
     }
     return 0;
 }
@@ -38,7 +37,6 @@ int AgentAdvertisementGenerator::sendAgentAdvertisement(const String& conf, Elem
 void AgentAdvertisementGenerator::sendMultiCastAdvertisement(){
     if (Packet *q = make_packet(IPAddress("255.255.255.255"))) {
  	    output(0).push(q);
-        click_chatter("Mobile Agent -- sent agent advertisement with unicast destination %s\n",MABase->getMyPublicAddress().unparse().c_str());
     }
 }
 void AgentAdvertisementGenerator::run_timer(Timer* t){
@@ -103,7 +101,7 @@ Packet* AgentAdvertisementGenerator::make_packet(IPAddress _dst) {
     aa_ext->type = 16;
     aa_ext->length = 6 + 4 * 1;
     aa_ext->sequence_number = htons(_sequence);
-    aa_ext->registration_lifetime = htons(30);
+    aa_ext->registration_lifetime = htons(60);
     aa_ext->flags_and_reserved = htons(0b1011000000000000);
 
     IPAddress *coa = (IPAddress*)(aa_ext + 1);

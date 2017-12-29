@@ -31,7 +31,6 @@ int NodeSollicitationGenerator::sendSollicitationHandler(const String& conf, Ele
     NodeSollicitationGenerator* nsg =  (NodeSollicitationGenerator*) e;
     if (Packet *q = nsg->make_packet()) {
  	    nsg->output(0).push(q);
-        click_chatter("Mobile Node -- sent router sollicitation with broadcast destination.\n");
     }
     return 0;
 }
@@ -39,7 +38,6 @@ int NodeSollicitationGenerator::sendSollicitationHandler(const String& conf, Ele
 int NodeSollicitationGenerator::sendSollicitation(){
     if (Packet *q = make_packet()) {
  	    output(0).push(q);
-        click_chatter("Mobile Node -- sent router sollicitation with broadcast destination.\n");
     }
     return 0;
 }

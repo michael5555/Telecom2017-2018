@@ -39,7 +39,6 @@ int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2){
  	        output(0).push(q);
         else if(iph->ip_src == MABase->getMyPrivateAddress())
             output(1).push(q);
-        click_chatter("Mobile Agent -- sent Mobile IP Registration Reply\n");
     }
     return 0;
 }

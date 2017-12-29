@@ -53,7 +53,6 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
     if (mipr->type == REGISTRATION_REQUEST){
-        click_chatter("Mobile Agent -- Recieved Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             int code = checkRegConditionsForeign(q);
             if(code == 0){
@@ -88,7 +87,6 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
         }
     }
     else if(mipr->type == REGISTRATION_REPLY){
-        click_chatter("Mobile Agent -- Recieved Registration Reply. %s\n",MABase->getMyPublicAddress().unparse().c_str());
         mobile_ip_registration_reply* mipreply = (mobile_ip_registration_reply*)(udph + 1);
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             this->relayReply(mipreply,iph,q);
@@ -100,7 +98,6 @@ void MARegistrationHandler::relayRequest(mobile_ip_registration_request* mipr,cl
     iph->ip_src = mipr->care_of_address;
     iph->ip_dst = mipr->home_agent;
     output(1).push(q);
-    click_chatter("Mobile Agent -- relayed Registration Request %s.\n",MABase->getMyPublicAddress().unparse().c_str());
 
 }
 
@@ -108,7 +105,6 @@ void MARegistrationHandler::relayReply(mobile_ip_registration_reply* mipreply,cl
     iph->ip_src = MABase->getMyPrivateAddress();
     iph->ip_dst = IPAddress(mipreply->home_address);
     output(2).push(q);
-    click_chatter("Mobile Agent -- relayed Registration Reply.\n",MABase->getMyPublicAddress().unparse().c_str());
 
 }
 

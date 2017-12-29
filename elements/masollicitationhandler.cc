@@ -33,7 +33,6 @@ void MASollicitationHandler::push(int, Packet* p) {
 }
 
 void MASollicitationHandler::handleSollicitation(Packet* p) {
-    click_chatter("Mobility Agent -- recieved router sollicitation.\n");
     click_ip *iph = (click_ip *)p->data();
     icmp_router_sollicitation *icmph = (icmp_router_sollicitation *)(iph + 1);
 

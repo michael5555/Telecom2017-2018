@@ -99,7 +99,6 @@ void MNAdvertisementHandler::discoverHome(Packet* p) {
     bool previousHomeStatus = MNBase->getHomeStatus();
 
     MNBase->setHomeStatus(true);
-    click_chatter("Mobile Node -- I am home.\n");
 
     IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
     ErrorHandler* errh = new ErrorHandler();
@@ -119,7 +118,6 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
 
 
     MNBase->setHomeStatus(false);
-    click_chatter("Mobile Node --  I am away.\n");
 
     IPRoute newgw = IPRoute(0,0,iph->ip_src,1);
     ErrorHandler* errh = new ErrorHandler();
