@@ -86,8 +86,8 @@ Returns or sets the DST parameter.
 
 class MyIPEncap : public Element { public:
 
-  IPEncap() CLICK_COLD;
-  ~IPEncap() CLICK_COLD;
+  MyIPEncap() CLICK_COLD;
+  ~MyIPEncap() CLICK_COLD;
 
   const char *class_name() const		{ return "MyIPEncap"; }
   const char *port_count() const		{ return PORTS_1_1; }

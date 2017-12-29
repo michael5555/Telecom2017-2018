@@ -56,7 +56,7 @@ MyIPEncap::configure(Vector<String> &conf, ErrorHandler *errh)
 	return -1;
 
   iph.ip_src = MABase->getMyPublicAddress();
-  iph.ip_dst = MABase->getLocalNode().careofaddress;
+  dst_str = MABase->getLocalNode().careofaddress.unparse();
 
 
 
@@ -167,7 +167,7 @@ MyIPEncap::simple_action(Packet *p_in)
 String
 MyIPEncap::read_handler(Element *e, void *thunk)
 {
-  IPEncap *ipe = static_cast<IPEncap *>(e);
+  MyIPEncap *ipe = static_cast<MyIPEncap *>(e);
   switch ((intptr_t)thunk) {
     case 0:
       return IPAddress(ipe->_iph.ip_src).unparse();
