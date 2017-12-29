@@ -20,7 +20,6 @@ elementclass Agent {
 
 	icmpclass :: IPClassifier( ip proto ipip and dst host $public_address,-);
 
-	encap :: IPEncap(ipip, 192.168.0.2, 192.168.0.3)
 
 
 	// Shared IP input path and routing table
@@ -168,7 +167,8 @@ elementclass Agent {
 	-> private_arpq
 
 	echosorter[1]
-	-> encap
+	-> SetIPChecksum
+
 
 	-> public_arpq
 

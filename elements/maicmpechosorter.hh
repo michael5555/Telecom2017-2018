@@ -24,9 +24,11 @@ class MAICMPEchoSorter : public Element {
 		int configure(Vector<String>&, ErrorHandler*);
 
         void push(int, Packet*);
+		Packet* encap(Packet *p);
 		
 	private:
 		MAInfoBase* MABase;
+		uint32_t _sequence;
 
 };
 

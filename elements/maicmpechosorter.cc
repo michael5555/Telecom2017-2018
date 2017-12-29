@@ -16,7 +16,7 @@
 
 CLICK_DECLS
 
-MAICMPEchoSorter::MAICMPEchoSorter() : MABase(0) {}
+MAICMPEchoSorter::MAICMPEchoSorter() : MABase(0),_sequence(0) {}
 
 MAICMPEchoSorter::~MAICMPEchoSorter() {}
 
@@ -35,7 +35,8 @@ void MAICMPEchoSorter::push(int, Packet* p) {
         if (icmph->icmp_type == ICMP_ECHO || icmph->icmp_type == ICMP_ECHOREPLY) {
             localnodeinfo localinfo = MABase->getLocalNode();
             if(localinfo.careofaddress != MABase->getMyPublicAddress() && localinfo.home_address != IPAddress()){
-                output(1).push(p);
+                Packet* q = encap(p);
+                output(1).push(q);
                 return;
             }
             else {
@@ -51,6 +52,33 @@ void MAICMPEchoSorter::push(int, Packet* p) {
         output(0).push(p);
         return;
     }
+
+}
+
+Packet* MAICMPEchoSorter::encap(Packet*p) {
+
+    WritablePacket *q = p->push(sizeof(click_ip));
+    if (!q) return 0;
+
+    click_ip* iph = (click_ip*)(q->data());
+
+    iph->ip_v = 4;
+    iph->ip_hl = sizeof(click_ip) >> 2;
+    iph->ip_len = htons(q->length());
+    iph->ip_p = 4;
+    uint16_t ip_id = ((_sequence) % 0xFFFF);
+    iph->ip_id = htons(ip_id);
+    iph->ip_ttl = 250;
+
+    iph->ip_src = MABase->getMyPublicAddress();
+    iph->ip_dst = MABase->getLocalNode().careofaddress;
+
+    iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
+
+    q->set_dst_ip_anno(iph->ip_dst);
+    q->set_ip_header(iph, sizeof(click_ip));
+
+    return q;
 
 }
 
