@@ -123,7 +123,7 @@ int MARegistrationHandler::checkRegConditionsForeign(Packet* p) {
         return 69;
     }
 
-    uint8_t flags = mipr->flags;
+    int flags = mipr->flags;
     std::stringstream ss;
     ss << flags;
     std::string str = ss.str();
@@ -161,7 +161,7 @@ int MARegistrationHandler::checkRegConditionsHome(Packet* p) {
     click_udp* udph = (click_udp *)(iph + 1);
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
-    uint8_t flags = mipr->flags;
+    int flags = mipr->flags;
     std::stringstream ss;
     ss << flags;
     std::string str = ss.str();
