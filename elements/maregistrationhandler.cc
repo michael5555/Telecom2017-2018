@@ -143,6 +143,15 @@ int MARegistrationHandler::checkRegConditionsForeign(Packet* p) {
         return 72;
     }
 
+    if(bs.test(5)){
+
+        return 70;
+    }
+    if(bs.test(7)){
+
+        return 70;
+    }
+
     return 0;
 }
 
