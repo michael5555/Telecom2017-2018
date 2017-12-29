@@ -33,7 +33,7 @@ int MAReplyGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
 
 int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2){
 
-    if (Packet *q = make_packet()) {
+    if (Packet *q = make_packet(id1,id2)) {
         click_ip *iph = (click_ip *)q->data();
         if( iph->ip_src == MABase->getMyPublicAddress())
  	        output(0).push(q);
@@ -111,9 +111,22 @@ Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2) {
    
 }
 
-int MAReplyGenerator::denyReply(uint32_t id1,uint32_t id2,uint8_t code, IPAddress src, IPAddress dst) {
+int MAReplyGenerator::sendDenial(uint32_t id1,uint32_t id2,uint8_t code, IPAddress src, IPAddress dst){
 
-int headroom = sizeof(click_ether);
+    if (Packet *q = denyReply(id1,id2,code,src,dst)) {
+        click_ip *iph = (click_ip *)q->data();
+        if( iph->ip_src == MABase->getMyPublicAddress())
+ 	        output(0).push(q);
+        else if(iph->ip_src == MABase->getMyPrivateAddress())
+            output(1).push(q);
+        click_chatter("Mobile Agent -- sent Mobile IP Registration Denial\n");
+    }
+    return 0;
+}
+
+Packet* MAReplyGenerator::denyReply(uint32_t id1,uint32_t id2,uint8_t code, IPAddress src, IPAddress dst) {
+
+    int headroom = sizeof(click_ether);
     
     WritablePacket *q = Packet::make(headroom, 0, sizeof(click_ip) 
     + sizeof(click_udp) + sizeof(mobile_ip_registration_reply), 0);
@@ -153,9 +166,6 @@ int headroom = sizeof(click_ether);
     mipr->lifetime = htons(30);
     mipr->home_address = nodeinfo.home_address.addr();
     mipr->home_agent = MABase->getMyPublicAddress().addr();
-
-
-
 
     mipr->id1 = id1;
     mipr->id2 = id2;

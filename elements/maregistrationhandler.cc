@@ -60,7 +60,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
                 this->relayRequest(mipr,iph,q);
             }
             else {
-                ReplyGen->denyReply(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
+                ReplyGen->sendDenial(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
                 click_chatter("Mobile Agent -- Denied Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
 
             }
@@ -80,7 +80,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
                 ReplyGen->sendReply(mipr->id1,mipr->id2);
             }
             else {
-                ReplyGen->denyReply(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
+                ReplyGen->sendDenial(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
                 click_chatter("Mobile Agent -- Denied Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
 
             }
