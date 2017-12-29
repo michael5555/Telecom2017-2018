@@ -46,6 +46,7 @@ void MNReplyHandler::handleReply(Packet* p) {
                 MNBase->setCareOfAddress(MNBase->getHomeAgentPublic());
             }
             else if (!MNBase->getHomeStatus() && mipr->code != 0) {
+                click_chatter("Mobile Node -- registration reply denied %s",MNBase->getMyAddress().unparse().c_str());
                 MNBase->setCareOfAddress(MNBase->getHomeAgentPublic());
             }
             return;
