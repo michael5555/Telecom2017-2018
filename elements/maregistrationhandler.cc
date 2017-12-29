@@ -118,12 +118,12 @@ int MARegistrationHandler::checkRegConditionsForeign(Packet* p) {
     click_udp* udph = (click_udp *)(iph + 1);
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
-    if (mipr->lifetime > 90) {
+    if (ntohs(mipr->lifetime) > 90) {
 
         return 69;
     }
 
-    int flags = mipr->flags;
+    uint8_t flags = mipr->flags;
     std::stringstream ss;
     ss << flags;
     std::string str = ss.str();
@@ -161,7 +161,7 @@ int MARegistrationHandler::checkRegConditionsHome(Packet* p) {
     click_udp* udph = (click_udp *)(iph + 1);
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
-    int flags = mipr->flags;
+    uint8_t flags = mipr->flags;
     std::stringstream ss;
     ss << flags;
     std::string str = ss.str();
