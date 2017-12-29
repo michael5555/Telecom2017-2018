@@ -166,7 +166,9 @@ elementclass Agent {
 	-> private_arpq
 
 	echosorter[1]
-	-> IPEncap(ipip, 192.168.0.2, 192.168.0.3)
+	//-> IPEncap(ipip, 192.168.0.2, 192.168.0.3)
+	-> MyIPEncap(ipip, MABASE MAState)
+
 	-> public_arpq
 
 }
