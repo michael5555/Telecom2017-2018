@@ -73,6 +73,7 @@ Packet* MAICMPEchoSorter::encap(Packet*p) {
     iph->ip_src = MABase->getMyPublicAddress();
     iph->ip_dst = MABase->getLocalNode().careofaddress;
 
+    iph->ip_off |= htons(IP_DF);
     iph->ip_sum = click_in_cksum((unsigned char *)iph, sizeof(click_ip));
 
     q->set_dst_ip_anno(iph->ip_dst);
