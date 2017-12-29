@@ -61,7 +61,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
             }
             else {
                 ReplyGen->sendDenial(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
-                click_chatter("Mobile Agent -- Denied Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
+                click_chatter("Mobile Agent -- Denied Registration Request.%s  code: %d \n", MABase->getMyPublicAddress().unparse().c_str(),code);
 
             }
         }
@@ -81,7 +81,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
             }
             else {
                 ReplyGen->sendDenial(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
-                click_chatter("Mobile Agent -- Denied Registration Request. %s\n",MABase->getMyPublicAddress().unparse().c_str());
+                click_chatter("Mobile Agent -- Denied Registration Request. %s code: %d\n",MABase->getMyPublicAddress().unparse().c_str(),code);
 
             }
 
@@ -118,7 +118,7 @@ int MARegistrationHandler::checkRegConditionsForeign(Packet* p) {
     click_udp* udph = (click_udp *)(iph + 1);
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
-    if (mipr->lifetime > 60) {
+    if (mipr->lifetime > 90) {
 
         return 69;
     }
