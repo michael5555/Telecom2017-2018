@@ -77,6 +77,9 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     mipr->type = 1;
     mipr->flags = 0x00;
     mipr->lifetime = htons(reg_lifetime);
+    click_chatter("registration lifetime is: %d",reg_lifetime);
+    click_chatter("registration lifetime is(htons): %d",htons(reg_lifetime);
+
     mipr->home_address = MNBase->getMyAddress();
     mipr->home_agent = MNBase->getHomeAgentPublic();
     mipr->care_of_address = MNBase->getCareOfAddress();

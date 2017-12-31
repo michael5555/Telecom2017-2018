@@ -92,6 +92,9 @@ Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2,uint16_t lifetim
 
     mipr->type = 3;
     mipr->code = 0;
+    click_chatter("registration lifetime is at reply: %d",lifetime);
+    click_chatter("registration lifetime is(htons) at reply: %d",htons(lifetime);
+
     if(lifetime == 60){
         mipr->lifetime = htons(30);
     }
