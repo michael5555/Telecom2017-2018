@@ -22,7 +22,10 @@ public:
     int configure(Vector<String>&, ErrorHandler*);
     int sendRequest();
     void setRequestDestination(IPAddress);
+    void setRequestLifetime(int);
+
     void run_timer(Timer*);
+
 
 
 
@@ -34,6 +37,7 @@ private:
     uint32_t _sequence;
     Timer timer;
     IPAddress requestdst;
+    int reg_lifetime;
     
 };
 

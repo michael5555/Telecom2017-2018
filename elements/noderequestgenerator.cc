@@ -16,7 +16,7 @@
 
 CLICK_DECLS
 
-NodeRequestGenerator::NodeRequestGenerator() : MNBase(0), _sequence(0), timer(this) {}
+NodeRequestGenerator::NodeRequestGenerator() : MNBase(0), _sequence(0), timer(this),reg_lifetime(60) {}
 NodeRequestGenerator::~NodeRequestGenerator() {}
 
 int NodeRequestGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
@@ -76,7 +76,7 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
 
     mipr->type = 1;
     mipr->flags = 0x00;
-    mipr->lifetime = htons(60);
+    mipr->lifetime = htons(reg_lifetime);
     mipr->home_address = MNBase->getMyAddress();
     mipr->home_agent = MNBase->getHomeAgentPublic();
     mipr->care_of_address = MNBase->getCareOfAddress();
@@ -91,7 +91,9 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     
     q->set_dst_ip_anno(destination);
 
-    timer.schedule_after_msec(60 * 1000);
+    if(reg_lifetime != 0){
+        timer.schedule_after_msec(60 * 1000);
+    }
     
     return q;
    
@@ -100,6 +102,11 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
 void NodeRequestGenerator::setRequestDestination(IPAddress dst){
 
     requestdst = dst;
+}
+
+void NodeRequestGenerator::setRequestLifetime(int lt){
+
+    reg_lifetime = lt;
 }
 
 void NodeRequestGenerator::run_timer(Timer* t) {

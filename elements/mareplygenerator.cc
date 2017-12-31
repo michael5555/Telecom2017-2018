@@ -31,9 +31,9 @@ int MAReplyGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
     return 0;
 }
 
-int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2){
+int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2,uint16_t lt){
 
-    if (Packet *q = make_packet(id1,id2)) {
+    if (Packet *q = make_packet(id1,id2,lt)) {
         click_ip *iph = (click_ip *)q->data();
         if( iph->ip_src == MABase->getMyPublicAddress())
  	        output(0).push(q);
@@ -43,7 +43,7 @@ int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2){
     return 0;
 }
 
-Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2) {
+Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2,uint16_t lifetime) {
 
     int headroom = sizeof(click_ether);
     
@@ -92,7 +92,13 @@ Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2) {
 
     mipr->type = 3;
     mipr->code = 0;
-    mipr->lifetime = htons(30);
+    if(lifetime == 60){
+        mipr->lifetime = htons(30);
+    }
+    else {
+        mipr->lifetime = htons(0);
+
+    }
     mipr->home_address = nodeinfo.home_address.addr();
     mipr->home_agent = MABase->getMyPublicAddress().addr();
 

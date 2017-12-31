@@ -106,6 +106,7 @@ void MNAdvertisementHandler::discoverHome(Packet* p) {
 
     if(!previousHomeStatus) {
         RGen->setRequestDestination(MNBase->getHomeAgentPrivate());
+        RGen->setRequestLifetime(0);
         RGen->sendRequest();
     }
 
@@ -125,6 +126,8 @@ void MNAdvertisementHandler::discoverAway(Packet* p) {
 
     if(previousHomeStatus) {
         RGen->setRequestDestination(iph->ip_src);
+        RGen->setRequestLifetime(60);
+
         RGen->sendRequest();
     }
 
