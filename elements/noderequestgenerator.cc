@@ -112,6 +112,12 @@ void NodeRequestGenerator::setRequestLifetime(int lt){
     reg_lifetime = lt;
 }
 
+void NodeRequestGenerator::unScheduleTimer() {
+
+    timer.clear();
+}
+
+
 void NodeRequestGenerator::run_timer(Timer* t) {
 
     this->sendRequest();

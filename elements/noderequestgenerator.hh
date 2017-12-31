@@ -23,6 +23,8 @@ public:
     int sendRequest();
     void setRequestDestination(IPAddress);
     void setRequestLifetime(int);
+    void unScheduleTimer();
+
 
     void run_timer(Timer*);
 
