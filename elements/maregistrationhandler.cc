@@ -76,9 +76,6 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
                 else {
                     MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
                 }
-                click_chatter("registration lifetime is at handler: %d",mipr->lifetime);
-                click_chatter("registration lifetime is(htons) at handler: %d",htons(mipr->lifetime);
-
                 ReplyGen->sendReply(mipr->id1,mipr->id2,ntohs(mipr->lifetime));
             }
             else {
