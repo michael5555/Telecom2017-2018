@@ -52,13 +52,6 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
     click_udp* udph = (click_udp *)(iph + 1);
     mobile_ip_registration_request* mipr = (mobile_ip_registration_request*)(udph + 1);
 
-    unsigned csum = udph->uh_sum;
-    unsigned len = ntohs(udph->uh_ulen);
-    if (click_in_cksum_pseudohdr(csum, iph, len) != 0){
-        click_chatter("bad UDP checksum\n");
-        return;
-    }
-
     if (mipr->type == REGISTRATION_REQUEST){
         if(mipr->home_agent != MABase->getMyPublicAddress() && mipr->home_agent != MABase->getMyPrivateAddress()) {
             int code = checkRegConditionsForeign(q);
