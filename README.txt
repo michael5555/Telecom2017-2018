@@ -40,6 +40,10 @@ De voornaamste situatie
 
 Er is ook een handler voorzien om de ICMP Router lifetime in te stellen.
 
+                telnet localhost 10002/10003
+                write home_agent/advertisementsource.setRouterLifetime LT <integer>
+
+
 
 
 
