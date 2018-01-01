@@ -48,6 +48,8 @@ void AgentAdvertisementGenerator::run_timer(Timer* t){
   
 void AgentAdvertisementGenerator::add_handlers() {
     add_write_handler("sendAdvertisement", &sendAgentAdvertisement, (void*)0);
+    add_write_handler("setRouterLifetime", &setRouterLifetime, (void*)0);
+
 }
 
 void AgentAdvertisementGenerator::setInterval(unsigned int i) {
