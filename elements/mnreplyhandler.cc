@@ -40,6 +40,14 @@ void MNReplyHandler::handleReply(Packet* p) {
     mobile_ip_registration_reply* mipr = (mobile_ip_registration_reply*)(udph + 1);
     if(iph->ip_p == IP_PROTO_UDP){
 
+
+    unsigned csum = udph->uh_sum;
+    unsigned len = ntohs(udph->uh_ulen);
+    if (click_in_cksum_pseudohdr(csum, iph, len) != 0){
+        click_chatter("bad UDP checksum\n");
+        return;
+    }
+
         if(mipr->type == REGISTRATION_REPLY){
             if(MNBase->getHomeStatus()){
                 MNBase->setCareOfAddress(MNBase->getHomeAgentPublic());
