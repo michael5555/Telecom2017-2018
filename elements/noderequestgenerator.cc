@@ -26,6 +26,7 @@ int NodeRequestGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
 
     timer.initialize(this);
     requestdst = MNBase->getHomeAgentPrivate();
+    uport = rand()%(49151 - 1000 + 1) + 1000;
     return 0;
 }
 
@@ -66,7 +67,7 @@ Packet* NodeRequestGenerator::make_packet(IPAddress destination) {
     
     click_udp *udph = (click_udp *)(iph + 1);
     
-    udph->uh_sport = htons(56026);
+    udph->uh_sport = htons(uport);
     udph->uh_dport = htons(434);
     uint16_t len = q->length() - sizeof(click_ip);
     udph->uh_ulen = htons(len);

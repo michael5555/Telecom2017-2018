@@ -20,7 +20,7 @@ public:
     const char* processing() const { return PUSH; }
     int configure(Vector<String>&, ErrorHandler*);
 
-    int sendReply(uint32_t,uint32_t,uint16_t);
+    int sendReply(uint32_t,uint32_t,uint16_t,uint16_t);
     Packet* denyReply(uint32_t,uint32_t,uint8_t,IPAddress,IPAddress);
     int sendDenial(uint32_t,uint32_t,uint8_t,IPAddress,IPAddress);
 
@@ -28,7 +28,7 @@ public:
 
 private:
 
-    Packet* make_packet(uint32_t,uint32_t,uint16_t);
+    Packet* make_packet(uint32_t,uint32_t,uint16_t,uint16_t);
     MAInfoBase* MABase;
 
     uint32_t _sequence;

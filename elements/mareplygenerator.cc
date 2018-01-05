@@ -31,9 +31,9 @@ int MAReplyGenerator::configure(Vector<String>& conf, ErrorHandler* errh) {
     return 0;
 }
 
-int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2,uint16_t lt){
+int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2,uint16_t lt,uint16_t uport){
 
-    if (Packet *q = make_packet(id1,id2,lt)) {
+    if (Packet *q = make_packet(id1,id2,lt,uport)) {
         click_ip *iph = (click_ip *)q->data();
         if( iph->ip_src == MABase->getMyPublicAddress())
  	        output(0).push(q);
@@ -43,7 +43,7 @@ int MAReplyGenerator::sendReply(uint32_t id1,uint32_t id2,uint16_t lt){
     return 0;
 }
 
-Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2,uint16_t lifetime) {
+Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2,uint16_t lifetime,uint16_t uport) {
 
     int headroom = sizeof(click_ether);
     
@@ -83,7 +83,7 @@ Packet* MAReplyGenerator::make_packet(uint32_t id1,uint32_t id2,uint16_t lifetim
     click_udp *udph = (click_udp *)(iph + 1);
     
     udph->uh_sport = htons(434);
-    udph->uh_dport = htons(56026);
+    udph->uh_dport = htons(uport);
     uint16_t len = q->length() - sizeof(click_ip);
     udph->uh_ulen = htons(len);
     udph->uh_sum = click_in_cksum((unsigned char *)udph, sizeof(click_udp));

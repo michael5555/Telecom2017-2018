@@ -40,6 +40,7 @@ private:
     Timer timer;
     IPAddress requestdst;
     int reg_lifetime;
+    int uport;
     
 };
 

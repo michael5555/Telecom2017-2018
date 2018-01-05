@@ -76,7 +76,7 @@ void MARegistrationHandler::handleRegistration(Packet* p) {
                 else {
                     MABase->setLocalNode(mipr->home_address,mipr->care_of_address,mipr->lifetime);
                 }
-                ReplyGen->sendReply(mipr->id1,mipr->id2,ntohs(mipr->lifetime));
+                ReplyGen->sendReply(mipr->id1,mipr->id2,ntohs(mipr->lifetime),udph->uh_sport);
             }
             else {
                 ReplyGen->sendDenial(mipr->id1,mipr->id2,code,iph->ip_dst,iph->ip_src);
